@@ -6,7 +6,7 @@ module.exports = {
     callbackURL: "https://cookat.herokuapp.com/auth/facebook/callback",
     profileURL:
       "https://graph.facebook.com/v2.5/me?fields=first_name,last_name,email",
-    profileFields: ["id", "email", "name"] // For requesting permissions from Facebook API
+    profileFields: ["id", "email", "displayName"] // For requesting permissions from Facebook API
   },
 
   googleAuth: {
