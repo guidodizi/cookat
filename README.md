@@ -1,2 +1,2 @@
-# cookat
-CookAt Backend
+# CookAtReviews
+Node express server for collecting reviews

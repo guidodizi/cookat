@@ -1,0 +1,66 @@
+extends layout
+block content
+
+  div.col-md-8.col-md-offset-2.content
+    h2 
+      span.fa.fa-sign-in 
+      | &nbsp; Sign up
+      
+    if errors
+      ul
+        for error in errors
+          li.error-msg!= error.msg
+
+    form(method='POST' action='' onsubmit="return checkForm()" )
+      div.form-group
+        label(for='email') Email:
+        input#email.form-control(
+          type='email', 
+          placeholder='Ingresa tu email', 
+          name='email', 
+          required= true,
+          value=(chef === undefined ? '' : chef.user.email)
+        )
+    
+      div.form-group
+        label(for='password') Password:
+        input#password.form-control(
+          type='password', 
+          placeholder='Ingresa tu contraseña', 
+          name='password',
+          required= true,
+        )
+        
+      div.form-group
+        label(for='password_confirm') Password confirm:
+        input#password_confirm.form-control(
+          type='password', 
+          placeholder='Vuelve a ingresar tu contraseña', 
+          name='password_confirm',
+          required= true
+        )
+  
+      button.btn.btn-primary.btn-lg(type='submit') Submit
+
+      hr
+      p Ya tenés cuenta? &nbsp;
+        a(href="/login") Login
+      p O ir al &nbsp;
+        a(href="/") Home
+
+  //- script.
+  //-   function checkForm() {
+  //-     //var email = document.querySelector(`#email`).value;
+  //-     var pass = document.querySelector(`#password`).value;
+  //-     var pass_con = document.querySelector(`#password_confirm`).value;
+  //-     //regular expresion to validate email, extra security
+  //-     //var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  //-     //catch sumbission
+  //-     if (pass != pass_con){
+  //-       alert('No coinciden las contraseñas')
+  //-       return false;
+  //-     }else{
+  //-       return true;
+  //-     }
+        
+  //-   }

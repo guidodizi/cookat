@@ -1,0 +1,32 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.checked {
+  color: orange;
+}
+
+.fa-star {
+  font-size: 30px !important;
+  color: #9a9a9a
+}
+
+.error-msg {
+  color: rgb(221, 22, 22);
+}
+
+.image {
+  width: 100%
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .image {width:300px;}
+  .content {margin-bottom: 60px}
+
+}
