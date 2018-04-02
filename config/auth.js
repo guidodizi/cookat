@@ -5,8 +5,6 @@ module.exports = {
     clientSecret: "a04a7056ff398083f2d80996965bc650", // your App Secret
     callbackURL: "https://cookat.herokuapp.com/auth/facebook/callback",
     passReqToCallback: true,
-    // profileURL:
-    //   "https://graph.facebook.com/v2.5/me?fields=first_name,last_name,email",
     profileFields: ["id", "displayName", "photos", "email"]
   },
 
