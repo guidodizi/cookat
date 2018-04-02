@@ -4,8 +4,7 @@ module.exports = {
     clientID: "895792863919984", // your App ID
     clientSecret: "a04a7056ff398083f2d80996965bc650", // your App Secret
     callbackURL: "https://cookat.herokuapp.com/auth/facebook/callback",
-    passReqToCallback: true,
-    profileFields: ["id", "displayName", "photos", "email"]
+    profileFields: ["id", "displayName", "email"]
   },
 
   googleAuth: {

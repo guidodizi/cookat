@@ -51,7 +51,8 @@ module.exports = function(passport) {
   router.get(
     "/auth/facebook",
     passport.authenticate("facebook", {
-      scope: ["email"]
+      authType: "rerequest",
+      scope: ["email", "public_profile"]
     })
   );
 
