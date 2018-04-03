@@ -11,7 +11,7 @@ module.exports = function(passport) {
    */
   /* GET write review form. */
   router.get("/", (req, res) => {
-    res.render("index");
+    res.redirect("/login");
   });
 
   /**
