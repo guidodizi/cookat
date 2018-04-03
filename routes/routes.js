@@ -2,11 +2,12 @@ var express = require("express");
 var router = express.Router();
 const review_controller = require("../controllers/reviewController");
 const user_controller = require("../controllers/userController");
+const chef_controller = require("../controllers/chefController");
 
 module.exports = function(passport) {
   /**
    * =============================================
-   *                REVIEWS
+   *                Home
    * =============================================
    */
   /* GET write review form. */
@@ -38,11 +39,15 @@ module.exports = function(passport) {
 
   /**
    * =============================================
-   *                PROFILE
+   *                CHEF
    * =============================================
    */
-  /*GET profile page */
-  //router.get("/profile/:id", chef_controller.chef_detail);
+  /*GET chef page */
+  router.get("/chef/:id", chef_controller.chef_detail);
+
+  router.get("/signup/chef", isLoggedIn, chef_controller.signup_get);
+
+  router.post("/signup/chef", isLoggedIn, chef_controller.signup_post);
 
   // =====================================
   // FACEBOOK ROUTES =====================
@@ -51,7 +56,6 @@ module.exports = function(passport) {
   router.get(
     "/auth/facebook",
     passport.authenticate("facebook", {
-      authType: "rerequest",
       scope: ["email", "public_profile"]
     })
   );
@@ -63,7 +67,7 @@ module.exports = function(passport) {
       failureRedirect: "/"
     }),
     function(req, res, next) {
-      if (req.user) res.redirect("/profile/" + req.user.id);
+      if (req.user) res.redirect("/chef/" + req.user.id);
     }
   );
 
@@ -81,7 +85,7 @@ module.exports = function(passport) {
       failureFlash: true
     }),
     function(req, res, next) {
-      if (req.user) res.redirect("/profile/" + req.user.id);
+      if (req.user) res.redirect("/chef/" + req.user.id);
     }
   );
 
@@ -98,21 +102,15 @@ module.exports = function(passport) {
    */
   router.get("/signup", (req, res) => res.redirect("/signup/user"));
 
-  router.get("/signup/user", user_controller.signup_user_get);
+  router.get("/signup/user", user_controller.signup_get);
 
-  router.post(
-    "/signup/user",
-    user_controller.signup_user_post,
+  router.post("/signup/user", user_controller.signup_post, (req, res, next) => {
     passport.authenticate("local-signup", {
       successRedirect: "/signup/chef", // redirect to the secure profile section
       failureRedirect: "/signup/user", // redirect back to the signup page if there is an error
       failureFlash: true // allow flash messages
-    })
-  );
-
-  router.get("/signup/chef", isLoggedIn, user_controller.signup_chef_get);
-
-  router.post("/signup/chef", isLoggedIn, user_controller.signup_chef_post);
+    });
+  });
 
   /**
    * =============================================

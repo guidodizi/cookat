@@ -25,6 +25,10 @@ var UserSchema = Schema({
 });
 
 // methods ======================
+UserSchema.virtual("name").get(
+  () => this.local.first_name + " " + this.local.last_name
+);
+
 // generating a hash
 UserSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

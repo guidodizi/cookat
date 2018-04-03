@@ -4,16 +4,19 @@ var Schema = mongoose.Schema;
 var ChefSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
 
-  description: { type: String, required: true, min: 3, max: 100 },
   phone: { type: Number, required: true },
   date_of_birth: { type: Date, required: true },
-  price_hour: { type: Number, required: true, min: 0, max: 1000 },
+  description: { type: String, required: true, min: 3, max: 100 },
 
   dishes: [{ type: Schema.Types.ObjectId, ref: "Dish" }]
 });
 
-ChefSchema.virtual("name").get(() => this.first_name + " " + this.last_name);
-ChefSchema.virtual("url").get(() => "/profile/" + this._id);
+ChefSchema.virtual("url").get(() => "/chef/" + this._id);
+ChefSchema.virtual("date_of_birth_formatted").get(function() {
+  return this.date_of_birth
+    ? moment(this.date_of_birth).format("MMMM Do, YYYY")
+    : "";
+});
 
 // Export model.
 module.exports = mongoose.model("Chef", ChefSchema);
