@@ -4,8 +4,6 @@ var Schema = mongoose.Schema;
 var ChefSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
 
-  first_name: { type: String, required: true, min: 3, max: 100 },
-  last_name: { type: String, required: true, min: 3, max: 100 },
   description: { type: String, required: true, min: 3, max: 100 },
   phone: { type: Number, required: true },
   date_of_birth: { type: Date, required: true },

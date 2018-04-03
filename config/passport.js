@@ -58,6 +58,10 @@ module.exports = function(passport) {
                 profile.name.givenName + " " + profile.name.familyName; // look at the passport user profile to see how names are returned
               newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
+              newUser.local.email = profile.emails[0].value;
+              newUser.local.first_name = profile.name.givenName;
+              newUser.local.last_name = profile.name.familyName;
+
               // save our user to the database
               newUser.save(function(err) {
                 if (err) throw err;
@@ -111,6 +115,8 @@ module.exports = function(passport) {
 
               // set the user's local credentials
               newUser.local.email = email;
+              newUser.local.first_name = req.body.first_name;
+              newUser.local.last_name = req.body.last_name;
               newUser.local.password = newUser.generateHash(password);
 
               // save the user

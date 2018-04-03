@@ -19,7 +19,19 @@ exports.signup_user_post = [
     .isEmail()
     .withMessage("Formato de email incorrecto")
     .trim(),
+  body("first_name")
+    .isLength({ min: 1 })
+    .trim()
+    .withMessage("Debes ingresar tu nombre de pila.")
+    .isAlpha()
+    .withMessage("Tu nombre debe contener solo letras"),
 
+  body("last_name")
+    .isLength({ min: 1 })
+    .trim()
+    .withMessage("Debes ingresar tu apellido.")
+    .isAlpha()
+    .withMessage("Tu apellido debe contener solo letras"),
   body("password")
     .exists()
     .isLength({ min: 8 })
@@ -52,20 +64,6 @@ exports.signup_chef_get = function(req, res, next) {
 };
 
 exports.signup_chef_post = [
-  body("first_name")
-    .isLength({ min: 1 })
-    .trim()
-    .withMessage("Debes ingresar tu nombre de pila.")
-    .isAlpha()
-    .withMessage("Tu nombre debe contener solo letras"),
-
-  body("last_name")
-    .isLength({ min: 1 })
-    .trim()
-    .withMessage("Debes ingresar tu apellido.")
-    .isAlpha()
-    .withMessage("Tu apellido debe contener solo letras"),
-
   body("description", " Debes ingresar una descripcion de tu estilo de cocina.")
     .isLength({ min: 1 })
     .trim(),

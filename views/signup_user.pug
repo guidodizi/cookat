@@ -21,7 +21,26 @@ block content
           required= true,
           value=(chef === undefined ? '' : chef.user.email)
         )
-    
+      div.form-group
+        label(for='first_name') Nombre:
+        input#first_name.form-control(
+          type='text', 
+          placeholder='Ingresa tu nombre de pila', 
+          name='first_name',
+          required= true,          
+          value=(chef === undefined ? '' : chef.last_name)
+        )
+        
+      div.form-group
+        label(for='last_name') Apellido:
+        input#last_name.form-control(
+          type='text', 
+          placeholder='Ingresa tu apellido', 
+          name='last_name', 
+          required= true,          
+          value=(chef === undefined ? '' : chef.last_name)
+        )
+        
       div.form-group
         label(for='password') Password:
         input#password.form-control(

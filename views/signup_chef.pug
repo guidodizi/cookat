@@ -12,25 +12,6 @@ block content
           li.error-msg!= error.msg
 
     form(method='POST' action='' onsubmit="return checkForm()" )  
-      div.form-group
-        label(for='first_name') Nombre:
-        input#first_name.form-control(
-          type='text', 
-          placeholder='Ingresa tu nombre de pila', 
-          name='first_name',
-          required= true,          
-          value=(chef === undefined ? '' : chef.last_name)
-        )
-        
-      div.form-group
-        label(for='last_name') Apellido:
-        input#last_name.form-control(
-          type='text', 
-          placeholder='Ingresa tu apellido', 
-          name='last_name', 
-          required= true,          
-          value=(chef === undefined ? '' : chef.last_name)
-        )
       
       div.form-group
         label(for='phone') Celular de contacto:
@@ -73,8 +54,6 @@ block content
           value=(chef === undefined ? '' : chef.description)
         )
 
-
-        
       button.btn.btn-primary.btn-lg(type='submit') Submit
 
       hr

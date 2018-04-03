@@ -5,8 +5,10 @@ var Schema = mongoose.Schema;
 // define the schema for our user model
 var UserSchema = Schema({
   local: {
-    email: String,
-    password: String
+    email: { type: String, required: true, min: 3, max: 100 },
+    password: { type: String, required: true, min: 8, max: 100 },
+    first_name: { type: String, required: true, min: 3, max: 100 },
+    last_name: { type: String, required: true, min: 3, max: 100 }
   },
   facebook: {
     id: String,
