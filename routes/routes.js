@@ -50,6 +50,7 @@ module.exports = function(passport, app) {
 
   // route for logging out
   router.get("/logout", function(req, res) {
+    app.locals._user = null;
     req.logout();
     res.redirect("/");
   });
@@ -101,7 +102,7 @@ module.exports = function(passport, app) {
    * =============================================
    */
   /*GET chef page */
-  router.get("/chef/:id", chef_controller.chef_detail);
+  router.get("/chef/:id", isLoggedIn, chef_controller.chef_detail);
 
   router.get("/signup/chef", isLoggedIn, chef_controller.signup_get);
 
