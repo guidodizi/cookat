@@ -1,65 +1,67 @@
 extends layout/layout
 block content
-  h2 
-    span.fa.fa-sign-in 
-    | &nbsp; Sign up
-    
-  if errors
-    ul
-      for error in errors
-        li.error-msg!= error.msg
+  section.p-3.p-lg-5.d-column
+    .my-auto
+      h2 
+        span.fa.fa-sign-in 
+        | &nbsp; Sign up
+        
+      if errors
+        ul
+          for error in errors
+            li.error-msg!= error.msg
 
-  form(method='POST' action='')
-    div.form-group
-      label(for='email') Email:
-      input#email.form-control(
-        type='email', 
-        placeholder='Ingresa tu email', 
-        name='email', 
-        required= true,
-        value=(chef === undefined ? '' : chef.user.email)
-      )
-    div.form-group
-      label(for='first_name') Nombre:
-      input#first_name.form-control(
-        type='text', 
-        placeholder='Ingresa tu nombre de pila', 
-        name='first_name',
-        required= true,          
-        value=(chef === undefined ? '' : chef.last_name)
-      )
-      
-    div.form-group
-      label(for='last_name') Apellido:
-      input#last_name.form-control(
-        type='text', 
-        placeholder='Ingresa tu apellido', 
-        name='last_name', 
-        required= true,          
-        value=(chef === undefined ? '' : chef.last_name)
-      )
+      form(method='POST' action='')
+        div.form-group
+          label(for='email') Email:
+          input#email.form-control(
+            type='email', 
+            placeholder='Ingresa tu email', 
+            name='email', 
+            required= true,
+            value=(chef === undefined ? '' : chef.user.email)
+          )
+        div.form-group
+          label(for='first_name') Nombre:
+          input#first_name.form-control(
+            type='text', 
+            placeholder='Ingresa tu nombre de pila', 
+            name='first_name',
+            required= true,          
+            value=(chef === undefined ? '' : chef.last_name)
+          )
+          
+        div.form-group
+          label(for='last_name') Apellido:
+          input#last_name.form-control(
+            type='text', 
+            placeholder='Ingresa tu apellido', 
+            name='last_name', 
+            required= true,          
+            value=(chef === undefined ? '' : chef.last_name)
+          )
 
-    div.form-group
-      label(for='password') Password:
-      input#password.form-control(
-        type='password', 
-        placeholder='Ingresa tu contraseña', 
-        name='password',
-        required= true,
-      )
-      
-    div.form-group
-      label(for='password_confirm') Password confirm:
-      input#password_confirm.form-control(
-        type='password', 
-        placeholder='Vuelve a ingresar tu contraseña', 
-        name='password_confirm',
-        required= true
-      )
+        div.form-group
+          label(for='password') Password:
+          input#password.form-control(
+            type='password', 
+            placeholder='Ingresa tu contraseña', 
+            name='password',
+            required= true,
+          )
+          
+        div.form-group
+          label(for='password_confirm') Password confirm:
+          input#password_confirm.form-control(
+            type='password', 
+            placeholder='Vuelve a ingresar tu contraseña', 
+            name='password_confirm',
+            required= true
+          )
 
-    button.btn.btn-primary(type='submit') Ingresar
-    hr
+        button.btn.btn-primary(type='submit') Ingresar
+        hr
 
-    p Ya tenés cuenta? &nbsp;
-      a(href="/login") Login
+        p Ya tenés cuenta? &nbsp;
+          a(href="/login") Login
 

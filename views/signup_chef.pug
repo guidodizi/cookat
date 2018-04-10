@@ -1,48 +1,49 @@
 extends layout/layout
 block content
 
-  div.col-md-8.col-md-offset-2.content
-    h2 
-      span.fa.fa-sign-in 
-      | &nbsp; Sign up
+  section.p-3.p-lg-5.d-column
+    .my-auto
+      h2 
+        span.fa.fa-sign-in 
+        | &nbsp; Sign up
 
-    if errors
-      ul
-        for error in errors
-          li.error-msg!= error.msg
+      if errors
+        ul
+          for error in errors
+            li.error-msg!= error.msg
 
-    form(method='POST' action='')
-      
-      div.form-group
-        label(for='phone') Celular de contacto:
-        input#phone.form-control(
-          type='text', 
-          placeholder='Ingresa tu celular', 
-          name='phone', 
-          required= true,          
-          value=(chef === undefined ? '' : chef.phone)
-        )
+      form(method='POST' action='')
         
-      div.form-group
-        label(for='date_of_birth') Fecha de nacimiento:
-        input#date_of_birth.form-control(
-          type='date', 
-          placeholder='Ingresa tu fecha de nacimiento', 
-          name='date_of_birth', 
-          required= true,          
-          value=(chef === undefined ? '' : chef.date_of_birth)
-        )
+        div.form-group
+          label(for='phone') Celular de contacto:
+          input#phone.form-control(
+            type='text', 
+            placeholder='Ingresa tu celular', 
+            name='phone', 
+            required= true,          
+            value=(chef === undefined ? '' : chef.phone)
+          )
+          
+        div.form-group
+          label(for='date_of_birth') Fecha de nacimiento:
+          input#date_of_birth.form-control(
+            type='date', 
+            placeholder='Ingresa tu fecha de nacimiento', 
+            name='date_of_birth', 
+            required= true,          
+            value=(chef === undefined ? '' : chef.date_of_birth)
+          )
 
-      div.form-group
-        label(for='description') Descripcion de tu estilo de cocina:
-        textarea#description.form-control(
-          placeholder='Cuentanos sobre tu cocina',
-          name="description",
-          cols="30", 
-          rows="10", 
-          required= true,          
-          value=(chef === undefined ? '' : chef.description)
-        )
+        div.form-group
+          label(for='description') Descripcion de tu estilo de cocina:
+          textarea#description.form-control(
+            placeholder='Cuentanos sobre tu cocina',
+            name="description",
+            cols="30", 
+            rows="10", 
+            required= true,          
+            value=(chef === undefined ? '' : chef.description)
+          )
 
-      button.btn.btn-primary(type='submit') Ingresar
+        button.btn.btn-primary(type='submit') Ingresar
 

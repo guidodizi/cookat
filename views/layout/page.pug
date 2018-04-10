@@ -16,15 +16,13 @@ html(lang='en')
     link(href='/vendor/devicons/css/devicons.min.css', rel='stylesheet')
     link(href='/vendor/simple-line-icons/css/simple-line-icons.css', rel='stylesheet')
     // Custom styles for this template
-    link(href='/stylesheets/template.min.css', rel='stylesheet')
+    link(href='/stylesheets/template.css', rel='stylesheet')
     link(rel='stylesheet', href='/stylesheets/style.css')
 
   body
     block sideNav
     .container-fluid.p-0
-      section.resume-section.p-3.p-lg-5.d-flex.d-column
-        .my-auto
-          block content
+      block content
   block scripts
   // Bootstrap core JavaScript
   script(src='/vendor/jquery/jquery.min.js')
