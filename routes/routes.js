@@ -8,6 +8,29 @@ const User = require("../models/chef");
 module.exports = function(passport, app) {
   /**
    * =============================================
+   *                SIGN UP
+   * =============================================
+   */
+  router.get("/signup", (req, res) => res.redirect("/signup/user"));
+
+  router.get("/signup/user", user_controller.signup_get);
+
+  router.post(
+    "/signup/user",
+    user_controller.signup_post,
+    passport.authenticate("local-signup", {
+      successRedirect: "/signup/chef", // redirect to the secure profile section
+      failureRedirect: "/signup/user", // redirect back to the signup page if there is an error
+      failureFlash: true // allow flash messages
+    })
+  );
+
+  router.get("/signup/chef", isLoggedIn, chef_controller.signup_get);
+
+  router.post("/signup/chef", isLoggedIn, chef_controller.signup_post);
+
+  /**
+   * =============================================
    *                COMMON
    * =============================================
    */
@@ -57,25 +80,6 @@ module.exports = function(passport, app) {
 
   /**
    * =============================================
-   *                SIGN UP
-   * =============================================
-   */
-  router.get("/signup", (req, res) => res.redirect("/signup/user"));
-
-  router.get("/signup/user", user_controller.signup_get);
-
-  router.post(
-    "/signup/user",
-    user_controller.signup_post,
-    passport.authenticate("local-signup", {
-      successRedirect: "/signup/chef", // redirect to the secure profile section
-      failureRedirect: "/signup/user", // redirect back to the signup page if there is an error
-      failureFlash: true // allow flash messages
-    })
-  );
-
-  /**
-   * =============================================
    *                REVIEWS
    * =============================================
    */
@@ -103,10 +107,6 @@ module.exports = function(passport, app) {
    */
   /*GET chef page */
   router.get("/chef/:id", isLoggedIn, chef_controller.chef_detail);
-
-  router.get("/signup/chef", isLoggedIn, chef_controller.signup_get);
-
-  router.post("/signup/chef", isLoggedIn, chef_controller.signup_post);
 
   // =====================================
   //              FACEBOOK

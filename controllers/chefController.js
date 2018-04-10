@@ -3,6 +3,7 @@ const Chef = require("../models/chef");
 
 const { body, validationResult } = require("express-validator/check");
 const { sanitizeBody } = require("express-validator/filter");
+const moment = require("moment");
 
 // Display detail page for a specific Author.
 exports.chef_detail = function(req, res, next) {
@@ -56,7 +57,7 @@ exports.signup_post = [
       });
 
       if (!errors.isEmpty()) {
-        res.render("signup", { chef: chef, errors: errors.array() });
+        res.render("signup_chef", { chef: chef, errors: errors.array() });
       } else {
         chef.save(err => {
           if (err) {

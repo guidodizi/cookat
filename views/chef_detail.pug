@@ -1,13 +1,14 @@
-extends layout/layout
+extends layout
 
 block content
-
-  h2 Chef: #{chef.user.name}
-  
-  p #[strong Email:] #{chef.user.email}
-  p #[strong Teléfono:] #{chef.phone}
-  p #[strong Fecha de nacimiento:] #{chef.date_of_birth_formatted}
-  p #[strong Descripcion de estilo de cocina:] #{chef.description}
+  section.padded-section.p-3.p-lg-5.d-flex.d-column
+    .my-auto
+      h2 Chef: #{chef.user.name}
+      
+      p #[strong Email:] #{chef.user.email}
+      p #[strong Teléfono:] #{chef.phone}
+      p #[strong Fecha de nacimiento:] #{chef.date_of_birth_formatted}
+      p #[strong Descripcion de estilo de cocina:] #{chef.description}
     
     //- if author_books.length
     //-   div(style='margin-left:20px;margin-top:20px')

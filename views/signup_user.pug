@@ -1,6 +1,6 @@
-extends layout/layout
+extends layout
 block content
-  section.p-3.p-lg-5.d-column
+  section.padded-section.p-3.p-lg-5.d-column
     .my-auto
       h2 
         span.fa.fa-sign-in 
@@ -19,7 +19,7 @@ block content
             placeholder='Ingresa tu email', 
             name='email', 
             required= true,
-            value=(chef === undefined ? '' : chef.user.email)
+            value=(user === undefined ? '' : user.email)
           )
         div.form-group
           label(for='first_name') Nombre:
@@ -28,7 +28,7 @@ block content
             placeholder='Ingresa tu nombre de pila', 
             name='first_name',
             required= true,          
-            value=(chef === undefined ? '' : chef.last_name)
+            value=(user === undefined ? '' : user.last_name)
           )
           
         div.form-group
@@ -38,7 +38,7 @@ block content
             placeholder='Ingresa tu apellido', 
             name='last_name', 
             required= true,          
-            value=(chef === undefined ? '' : chef.last_name)
+            value=(user === undefined ? '' : user.last_name)
           )
 
         div.form-group

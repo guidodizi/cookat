@@ -61,10 +61,22 @@ exports.signup_post = [
     var errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.render("signup_user", { errors: errors.array() });
+      return res.render("signup_user", {
+        user: {
+          email: req.body.email,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name
+        },
+        errors: errors.array()
+      });
     }
     if (req.body.password != req.body.password_confirm) {
       return res.render("signup_user", {
+        user: {
+          email: req.body.email,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name
+        },
         errors: [{ msg: "Contraseñas no coinciden" }]
       });
     }
