@@ -6,6 +6,19 @@ exports.login_get = function(req, res, next) {
   res.render("login", { errors: req.flash("error") });
 };
 
+exports.login_post = function(req, res, next) {
+  if (req.user) {
+    Chef.findOne()
+      .populate({
+        path: "user",
+        match: { id: req.user.id }
+      })
+      .exec(function(err, chef) {
+        res.redirect("/chef/" + chef.id);
+      });
+  }
+};
+
 exports.signup_get = function(req, res, next) {
   var errors = req.flash("error");
   res.render("signup_user", { errors: errors });

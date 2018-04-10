@@ -24,11 +24,14 @@ var UserSchema = Schema({
   }
 });
 
-// methods ======================
-UserSchema.virtual("name").get(
-  () => this.local.first_name + " " + this.local.last_name
-);
+UserSchema.virtual("name").get(function() {
+  return this.local.first_name + " " + this.local.last_name;
+});
+UserSchema.virtual("email").get(function() {
+  return this.facebook.email ? this.facebook.email : this.local.email;
+});
 
+// methods ======================
 // generating a hash
 UserSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

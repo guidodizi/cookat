@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var moment = require("moment");
 var Schema = mongoose.Schema;
 
 var ChefSchema = new Schema({
@@ -11,7 +12,10 @@ var ChefSchema = new Schema({
   dishes: [{ type: Schema.Types.ObjectId, ref: "Dish" }]
 });
 
-ChefSchema.virtual("url").get(() => "/chef/" + this._id);
+ChefSchema.virtual("url").get(function() {
+  return "/chef/" + this._id;
+});
+
 ChefSchema.virtual("date_of_birth_formatted").get(function() {
   return this.date_of_birth
     ? moment(this.date_of_birth).format("MMMM Do, YYYY")

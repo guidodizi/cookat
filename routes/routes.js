@@ -3,17 +3,75 @@ var router = express.Router();
 const review_controller = require("../controllers/reviewController");
 const user_controller = require("../controllers/userController");
 const chef_controller = require("../controllers/chefController");
+const User = require("../models/chef");
 
-module.exports = function(passport) {
+module.exports = function(passport, app) {
   /**
    * =============================================
-   *                Home
+   *                COMMON
+   * =============================================
+   */
+  router.get("*", function(req, res, next) {
+    // put user into app.locals for easy access from templates
+    if (req.user && !app.locals._user) {
+      app.locals._user = {
+        email: req.user.local.email,
+        first_name: req.user.local.first_name,
+        last_name: req.user.local.last_name
+      };
+    }
+    next();
+  });
+  /**
+   * =============================================
+   *                HOME
    * =============================================
    */
   /* GET write review form. */
   router.get("/", (req, res) => {
     res.redirect("/login");
   });
+
+  /**
+   * =============================================
+   *                LOGIN
+   * =============================================
+   */
+  router.get("/login", user_controller.login_get);
+
+  router.post(
+    "/login",
+    passport.authenticate("local-login", {
+      failureRedirect: "/login",
+      failureFlash: true
+    }),
+    user_controller.login_post
+  );
+
+  // route for logging out
+  router.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/");
+  });
+
+  /**
+   * =============================================
+   *                SIGN UP
+   * =============================================
+   */
+  router.get("/signup", (req, res) => res.redirect("/signup/user"));
+
+  router.get("/signup/user", user_controller.signup_get);
+
+  router.post(
+    "/signup/user",
+    user_controller.signup_post,
+    passport.authenticate("local-signup", {
+      successRedirect: "/signup/chef", // redirect to the secure profile section
+      failureRedirect: "/signup/user", // redirect back to the signup page if there is an error
+      failureFlash: true // allow flash messages
+    })
+  );
 
   /**
    * =============================================
@@ -50,7 +108,7 @@ module.exports = function(passport) {
   router.post("/signup/chef", isLoggedIn, chef_controller.signup_post);
 
   // =====================================
-  // FACEBOOK ROUTES =====================
+  //              FACEBOOK
   // =====================================
   // route for facebook authentication and login
   router.get(
@@ -70,47 +128,6 @@ module.exports = function(passport) {
       if (req.user) res.redirect("/chef/" + req.user.id);
     }
   );
-
-  /**
-   * =============================================
-   *                LOGIN
-   * =============================================
-   */
-  router.get("/login", user_controller.login_get);
-
-  router.post(
-    "/login",
-    passport.authenticate("local-login", {
-      failureRedirect: "/login",
-      failureFlash: true
-    }),
-    function(req, res, next) {
-      if (req.user) res.redirect("/chef/" + req.user.id);
-    }
-  );
-
-  // route for logging out
-  router.get("/logout", function(req, res) {
-    req.logout();
-    res.redirect("/");
-  });
-
-  /**
-   * =============================================
-   *                SIGN UP
-   * =============================================
-   */
-  router.get("/signup", (req, res) => res.redirect("/signup/user"));
-
-  router.get("/signup/user", user_controller.signup_get);
-
-  router.post("/signup/user", user_controller.signup_post, (req, res, next) => {
-    passport.authenticate("local-signup", {
-      successRedirect: "/signup/chef", // redirect to the secure profile section
-      failureRedirect: "/signup/user", // redirect back to the signup page if there is an error
-      failureFlash: true // allow flash messages
-    });
-  });
 
   /**
    * =============================================
