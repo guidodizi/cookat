@@ -32,11 +32,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+//give jade files access to moment
+app.locals.moment = require("moment");
+
 // required for passport
 app.use(session({ secret: "cookatsecretsauce" })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
 
 //Routes
 var routes = require("./routes/routes")(passport, app);

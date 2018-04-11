@@ -15,17 +15,14 @@ var UserSchema = Schema({
     token: String,
     name: String,
     email: String
-  },
-  google: {
-    id: String,
-    token: String,
-    email: String,
-    name: String
   }
 });
 
 UserSchema.virtual("name").get(function() {
   return this.local.first_name + " " + this.local.last_name;
+});
+UserSchema.virtual("username").get(function() {
+  return this.local.first_name + "." + this.local.last_name;
 });
 UserSchema.virtual("email").get(function() {
   return this.facebook.email ? this.facebook.email : this.local.email;

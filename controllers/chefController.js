@@ -23,10 +23,6 @@ exports.chef_detail = function(req, res, next) {
     });
 };
 
-exports.signup_get = function(req, res, next) {
-  res.render("signup_chef");
-};
-
 exports.signup_post = [
   body("description", " Debes ingresar una descripcion de tu estilo de cocina.")
     .isLength({ min: 1 })
@@ -46,28 +42,21 @@ exports.signup_post = [
   sanitizeBody("price_hour").toInt(),
 
   (req, res, next) => {
-    if (req.user) {
-      const errors = validationResult(req);
+    var errors = validationResult(req);
 
-      var chef = new Chef({
-        user: req.user._id,
-        description: req.body.description,
-        phone: req.body.phone,
-        date_of_birth: req.body.date_of_birth
+    if (!errors.isEmpty()) {
+      return res.render("signup", {
+        user: {
+          email: req.body.email,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          phone: req.body.phone,
+          date_of_birth: req.body.date_of_birth,
+          description: req.body.description
+        },
+        errors: errors.array()
       });
-
-      if (!errors.isEmpty()) {
-        res.render("signup_chef", { chef: chef, errors: errors.array() });
-      } else {
-        chef.save(err => {
-          if (err) {
-            return next(err);
-          }
-          res.redirect(chef.url);
-        });
-      }
-    } else {
-      res.redirect("/signup");
     }
+    return next();
   }
 ];

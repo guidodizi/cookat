@@ -3,6 +3,7 @@ var LocalStrategy = require("passport-local").Strategy;
 var FacebookStrategy = require("passport-facebook").Strategy;
 // load up the user model
 var User = require("../models/user");
+var Chef = require("../models/chef");
 // load the auth variables
 var configAuth = require("./auth");
 
@@ -103,11 +104,7 @@ module.exports = function(passport) {
 
             // check to see if theres already a user with that email
             if (user) {
-              return done(
-                null,
-                false,
-                req.flash("error", { msg: "Email ingresado ya existe" })
-              );
+              return done(null, false, { msg: "Email ingresado ya existe" });
             } else {
               // if there is no user with that email
               // create the user
@@ -122,7 +119,18 @@ module.exports = function(passport) {
               // save the user
               newUser.save(function(err) {
                 if (err) throw err;
-                return done(null, newUser);
+
+                var chef = new Chef({
+                  user: newUser._id,
+                  description: req.body.description,
+                  phone: req.body.phone,
+                  date_of_birth: req.body.date_of_birth
+                });
+
+                chef.save(err => {
+                  if (err) throw err;
+                  return done(null, newUser);
+                });
               });
             }
           });
@@ -157,19 +165,15 @@ module.exports = function(passport) {
 
           // if no user is found, return the message
           if (!user)
-            return done(
-              null,
-              false,
-              req.flash("error", { msg: "No existe este usuario..." })
-            ); // req.flash is the way to set flashdata using connect-flash
+            return done(null, false, {
+              msg: "Ooops! Email o contraseña incorrectos."
+            });
 
           // if the user is found but the password is wrong
           if (!user.validPassword(password))
-            return done(
-              null,
-              false,
-              req.flash("error", { msg: "Ooops! Contraseña equivocada..." })
-            ); // create the loginMessage and save it to session as flashdata
+            return done(null, false, {
+              msg: "Ooops! Email o contraseña incorrectos."
+            });
 
           // all is well, return successful user
           return done(null, user);

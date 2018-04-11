@@ -1,33 +1,71 @@
 var express = require("express");
-var router = express.Router();
 const review_controller = require("../controllers/reviewController");
 const user_controller = require("../controllers/userController");
 const chef_controller = require("../controllers/chefController");
-const User = require("../models/chef");
+const Chef = require("../models/chef");
 
 module.exports = function(passport, app) {
+  var router = express.Router();
   /**
    * =============================================
    *                SIGN UP
    * =============================================
    */
-  router.get("/signup", (req, res) => res.redirect("/signup/user"));
-
-  router.get("/signup/user", user_controller.signup_get);
+  router.get("/signup", user_controller.signup_get);
 
   router.post(
-    "/signup/user",
+    "/signup",
     user_controller.signup_post,
-    passport.authenticate("local-signup", {
-      successRedirect: "/signup/chef", // redirect to the secure profile section
-      failureRedirect: "/signup/user", // redirect back to the signup page if there is an error
-      failureFlash: true // allow flash messages
-    })
+    chef_controller.signup_post,
+    function(req, res, next) {
+      passport.authenticate("local-signup", function(err, user, info) {
+        if (err) return next(err);
+        if (!user) {
+          return res.render("signup", { errors: info ? [info] : [] });
+        }
+        req.logIn(user, function(err) {
+          if (err) {
+            return next(err);
+          }
+          Chef.findOne({ user: user.id }).exec((err, chef) => {
+            return res.redirect("/chef/" + chef.id);
+          });
+        });
+      })(req, res, next);
+    }
   );
 
-  router.get("/signup/chef", isLoggedIn, chef_controller.signup_get);
+  /**
+   * =============================================
+   *                LOGIN
+   * =============================================
+   */
 
-  router.post("/signup/chef", isLoggedIn, chef_controller.signup_post);
+  router.get("/login", user_controller.login_get);
+
+  router.post("/login", function(req, res, next) {
+    passport.authenticate("local-login", function(err, user, info) {
+      if (err) return next(err);
+      if (!user) {
+        return res.render("login", { errors: info ? [info] : [] });
+      }
+      req.logIn(user, function(err) {
+        if (err) {
+          return next(err);
+        }
+        Chef.findOne({ user: user.id }).exec((err, chef) => {
+          return res.redirect("/chef/" + chef.id);
+        });
+      });
+    })(req, res, next);
+  });
+
+  // route for logging out
+  router.get("/logout", function(req, res) {
+    app.locals._user = null;
+    req.logout();
+    res.redirect("/");
+  });
 
   /**
    * =============================================
@@ -51,31 +89,10 @@ module.exports = function(passport, app) {
    * =============================================
    */
   /* GET write review form. */
-  router.get("/", (req, res) => {
-    res.redirect("/login");
-  });
-
-  /**
-   * =============================================
-   *                LOGIN
-   * =============================================
-   */
-  router.get("/login", user_controller.login_get);
-
-  router.post(
-    "/login",
-    passport.authenticate("local-login", {
-      failureRedirect: "/login",
-      failureFlash: true
-    }),
-    user_controller.login_post
-  );
-
-  // route for logging out
-  router.get("/logout", function(req, res) {
-    app.locals._user = null;
-    req.logout();
-    res.redirect("/");
+  router.get("/", isLoggedIn, (req, res) => {
+    Chef.findOne({ user: req.user.id }).exec((err, chef) => {
+      return res.redirect("/chef/" + chef.id);
+    });
   });
 
   /**
@@ -154,5 +171,5 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return next();
 
   // if they aren't redirect them to the home page
-  res.redirect("/");
+  res.redirect("/login");
 }

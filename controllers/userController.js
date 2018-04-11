@@ -3,25 +3,11 @@ const { sanitizeBody } = require("express-validator/filter");
 const Chef = require("../models/chef");
 
 exports.login_get = function(req, res, next) {
-  res.render("login", { errors: req.flash("error") });
-};
-
-exports.login_post = function(req, res, next) {
-  if (req.user) {
-    Chef.findOne()
-      .populate({
-        path: "user",
-        match: { id: req.user.id }
-      })
-      .exec(function(err, chef) {
-        res.redirect("/chef/" + chef.id);
-      });
-  }
+  res.render("login");
 };
 
 exports.signup_get = function(req, res, next) {
-  var errors = req.flash("error");
-  res.render("signup_user", { errors: errors });
+  res.render("signup");
 };
 
 exports.signup_post = [
@@ -61,21 +47,27 @@ exports.signup_post = [
     var errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.render("signup_user", {
+      return res.render("signup", {
         user: {
           email: req.body.email,
           first_name: req.body.first_name,
-          last_name: req.body.last_name
+          last_name: req.body.last_name,
+          phone: req.body.phone,
+          date_of_birth: req.body.date_of_birth,
+          description: req.body.description
         },
         errors: errors.array()
       });
     }
     if (req.body.password != req.body.password_confirm) {
-      return res.render("signup_user", {
+      return res.render("signup", {
         user: {
           email: req.body.email,
           first_name: req.body.first_name,
-          last_name: req.body.last_name
+          last_name: req.body.last_name,
+          phone: req.body.phone,
+          date_of_birth: req.body.date_of_birth,
+          description: req.body.description
         },
         errors: [{ msg: "Contraseñas no coinciden" }]
       });
