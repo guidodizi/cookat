@@ -1,4 +1,3 @@
-const Review = require("../models/review");
 const Chef = require("../models/chef");
 
 const { body, validationResult } = require("express-validator/check");

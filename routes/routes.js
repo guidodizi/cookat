@@ -1,5 +1,4 @@
 var express = require("express");
-const review_controller = require("../controllers/reviewController");
 const user_controller = require("../controllers/userController");
 const chef_controller = require("../controllers/chefController");
 const Chef = require("../models/chef");
@@ -11,10 +10,11 @@ module.exports = function(passport, app) {
    *                SIGN UP
    * =============================================
    */
-  router.get("/signup", user_controller.signup_get);
+  router.get("/signup", isLoggedOut, user_controller.signup_get);
 
   router.post(
     "/signup",
+    isLoggedOut,
     user_controller.signup_post,
     chef_controller.signup_post,
     function(req, res, next) {
@@ -45,9 +45,9 @@ module.exports = function(passport, app) {
    * =============================================
    */
 
-  router.get("/login", user_controller.login_get);
+  router.get("/login", isLoggedOut, user_controller.login_get);
 
-  router.post("/login", function(req, res, next) {
+  router.post("/login", isLoggedOut, function(req, res, next) {
     passport.authenticate("local-login", function(err, user, info) {
       if (err) return next(err);
       if (!user) {
@@ -65,7 +65,7 @@ module.exports = function(passport, app) {
   });
 
   // route for logging out
-  router.get("/logout", function(req, res) {
+  router.get("/logout", isLoggedIn, function(req, res) {
     app.locals._user = null;
     req.logout();
     res.redirect("/");
@@ -76,7 +76,7 @@ module.exports = function(passport, app) {
    *                COMMON
    * =============================================
    */
-  router.get("*", function(req, res, next) {
+  router.get("*", isLoggedIn, function(req, res, next) {
     // put user into app.locals for easy access from templates
     if (req.user && !app.locals._user) {
       app.locals._user = {
@@ -92,7 +92,6 @@ module.exports = function(passport, app) {
    *                HOME
    * =============================================
    */
-  /* GET write review form. */
   router.get("/", isLoggedIn, (req, res) => {
     Chef.findOne({ user: req.user.id }).exec((err, chef) => {
       return res.redirect("/chef/" + chef.id);
@@ -101,25 +100,14 @@ module.exports = function(passport, app) {
 
   /**
    * =============================================
-   *                REVIEWS
-   * =============================================
-   */
-  /* GET write review form. */
-  router.get("/review", review_controller.review_form_get);
-
-  /* POST write review form*/
-  router.post("/review", review_controller.review_form_post);
-
-  /**
-   * =============================================
    *                DISH
    * =============================================
    */
   /* GET create a new dish. */
-  router.get("/dish", review_controller.review_form_get);
+  router.get("/dish", isLoggedIn);
 
   /* POST create a new dish*/
-  router.post("/dish", review_controller.review_form_post);
+  router.post("/dish", isLoggedIn);
 
   /**
    * =============================================
@@ -151,14 +139,6 @@ module.exports = function(passport, app) {
     }
   );
 
-  /**
-   * =============================================
-   *                THANKS
-   * =============================================
-   */
-  /*GET to thanks page */
-  router.get("/thanks", review_controller.review_thanks_get);
-
   /*
    * 
    * 
@@ -176,4 +156,14 @@ function isLoggedIn(req, res, next) {
 
   // if they aren't redirect them to the home page
   res.redirect("/login");
+}
+
+function isLoggedOut(req, res, next) {
+  // if user is NOT authenticated in the session, carry on
+  if (!req.isAuthenticated()) return next();
+
+  // if user is already authenticated, redirect to its profile page
+  Chef.findOne({ user: req.user.id }).exec((err, chef) => {
+    return res.redirect("/chef/" + chef.id);
+  });
 }
