@@ -35,6 +35,10 @@ module.exports = function(passport, app) {
     }
   );
 
+  router.get("/signup/chef", isLoggedIn, chef_controller.signup_get);
+
+  router.post("/signup/chef", isLoggedIn, chef_controller.signup_post);
+
   /**
    * =============================================
    *                LOGIN

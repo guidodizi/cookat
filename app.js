@@ -1,3 +1,4 @@
+require("dotenv").config();
 var express = require("express");
 var path = require("path");
 var favicon = require("serve-favicon");
@@ -7,13 +8,17 @@ var bodyParser = require("body-parser");
 var passport = require("passport");
 var flash = require("connect-flash");
 var session = require("express-session");
+var moment = require("moment");
+
+moment.locale("es");
+moment.defaultFormat = "D MMMM YYYY";
 
 var app = express();
 
 // Set up mongoose connection
 var mongoose = require("mongoose");
-var dev_db_url = "mongodb://admin:admin@ds141464.mlab.com:41464/cookat_reviews";
-var mongoDB = process.env.MONGODB_URI || dev_db_url;
+
+var mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;

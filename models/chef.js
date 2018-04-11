@@ -17,9 +17,7 @@ ChefSchema.virtual("url").get(function() {
 });
 
 ChefSchema.virtual("date_of_birth_formatted").get(function() {
-  return this.date_of_birth
-    ? moment(this.date_of_birth).format("MMMM Do, YYYY")
-    : "";
+  return this.date_of_birth ? moment(this.date_of_birth).format() : "";
 });
 
 // Export model.

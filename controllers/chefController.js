@@ -23,6 +23,10 @@ exports.chef_detail = function(req, res, next) {
     });
 };
 
+exports.signup_get = function(req, res, next) {
+  res.render("FB_signup_chef");
+};
+
 exports.signup_post = [
   body("description", " Debes ingresar una descripcion de tu estilo de cocina.")
     .isLength({ min: 1 })

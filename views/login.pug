@@ -1,6 +1,16 @@
 extends layout
+block sideNav
+  nav#sideNav.navbar.navbar-expand-lg.navbar-dark.bg-primary.fixed-top
+    a.navbar-brand.js-scroll-trigger(href="/")
+      span.d-block.d-lg-none CookAt
+      span.d-none.d-lg-block
+        img.img-fluid.img-profile.rounded-circle.mx-auto.mb-2(src='/images/logo_circle.png', alt='')
+    .collapse.navbar-collapse
+      ul.navbar-nav
+        li.nav-item
+          a.nav-link(href= "/signup") Sign up 
+        
 block content
-
   section.padded-section.p-3.p-lg-5.d-flex.d-column
     .my-auto
       h2 

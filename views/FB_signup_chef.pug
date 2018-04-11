@@ -1,0 +1,62 @@
+extends layout
+block content
+  section.padded-section.p-3.p-lg-5.d-column
+    .my-auto.col-sm-6
+      h2 
+        span.fa.fa-sign-in 
+        | &nbsp; Sign up
+
+      if errors
+        ul
+          for error in errors
+            li.error-msg!= error.msg
+
+      form(method='POST' action='' onsubmit='onSubmit()')
+        
+        div.form-group
+          label(for='phone') Celular de contacto:
+          input#phone.form-control(
+            type='text', 
+            placeholder='Ingresa tu celular', 
+            name='phone', 
+            required= true,          
+            value=(chef === undefined ? '' : chef.phone)
+          )
+          
+        div.form-group
+          label(for='date_of_birth') Fecha de nacimiento:        
+          #datetimepicker.input-group.date
+            input#date_of_birth.form-control(
+              type='text'
+              placeholder='Ingresa tu fecha de nacimiento', 
+              name='date_of_birth', 
+              required= true,          
+              value=(chef === undefined ? '' : chef.date_of_birth)
+            )
+            div.input-group-addon(style= "background-color: #e1e1e1; border-radius: 2px;")
+              span.fa.fa-calendar(style= "color: black; padding: 8px;")
+
+        div.form-group
+          label(for='description') Descripcion de tu estilo de cocina:
+          textarea#description.form-control(
+            placeholder='Cuentanos sobre tu cocina',
+            name="description",
+            cols="30", 
+            rows="10", 
+            required= true,          
+            value=(chef === undefined ? '' : chef.description)
+          )
+
+        button.btn.btn-primary(type='submit') Ingresar
+
+block scripts
+  script.
+    $('#datetimepicker').datepicker({
+      format: "dd/mm/yyyy",
+      autoclose: true,
+      orientation: "bottom auto"
+    });
+    function onSubmit (){
+      const date = new Date($('#date_of_birth')[0].value).toISOString();
+      $('#date_of_birth')[0].value = date;
+    }

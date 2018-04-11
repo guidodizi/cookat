@@ -1,4 +1,14 @@
 extends layout
+block sideNav
+  nav#sideNav.navbar.navbar-expand-lg.navbar-dark.bg-primary.fixed-top
+    a.navbar-brand.js-scroll-trigger(href="/")
+      span.d-block.d-lg-none CookAt
+      span.d-none.d-lg-block
+        img.img-fluid.img-profile.rounded-circle.mx-auto.mb-2(src='/images/logo_circle.png', alt='')
+    .collapse.navbar-collapse
+      ul.navbar-nav
+        li.nav-item
+          a.nav-link(href= "/login") Login
 block content
   section.padded-section.p-3.p-lg-5.d-column
     .my-auto.col-sm-8
@@ -75,7 +85,7 @@ block content
         br
 
         div.form-group
-          label(for='password') Password:
+          label(for='password') Contraseña:
           input#password.form-control(
             type='password', 
             placeholder='Ingresa tu contraseña', 
@@ -84,7 +94,7 @@ block content
           )
           
         div.form-group
-          label(for='password_confirm') Password confirm:
+          label(for='password_confirm') Confirmar contraseña:
           input#password_confirm.form-control(
             type='password', 
             placeholder='Vuelve a ingresar tu contraseña', 
@@ -104,7 +114,8 @@ block scripts
     $('#datetimepicker').datepicker({
       format: "dd/mm/yyyy",
       autoclose: true,
-      orientation: "bottom auto"
+      orientation: "bottom auto",
+      language: 'es'
     });
     function onSubmit (){
       const date = new Date($('#date_of_birth')[0].value).toISOString();
