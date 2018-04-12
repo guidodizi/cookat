@@ -21,7 +21,9 @@ module.exports = function(passport, app) {
       passport.authenticate("local-signup", function(err, user, info) {
         if (err) return next(err);
         if (!user) {
-          return res.render("signup", { errors: info ? [info] : [] });
+          return res.render("signup", {
+            errors: info ? [info] : []
+          });
         }
         req.logIn(user, function(err) {
           if (err) {
@@ -51,7 +53,9 @@ module.exports = function(passport, app) {
     passport.authenticate("local-login", function(err, user, info) {
       if (err) return next(err);
       if (!user) {
-        return res.render("login", { errors: info ? [info] : [] });
+        return res.render("login", {
+          errors: info ? [info] : []
+        });
       }
       req.logIn(user, function(err) {
         if (err) {
@@ -114,8 +118,17 @@ module.exports = function(passport, app) {
    *                CHEF
    * =============================================
    */
-  /*GET chef page */
-  router.get("/chef/:id", isLoggedIn, chef_controller.chef_detail);
+  /*GET chef detail page */
+  router.get("/chef/:id", isLoggedIn, chef_controller.detail_get);
+
+  /*GET chef update page */
+  router.get("/chef/:id/update", isLoggedIn, chef_controller.update_get);
+  router.post(
+    "/chef/:id/update",
+    isLoggedIn,
+    user_controller.update_post,
+    chef_controller.update_post
+  );
 
   // =====================================
   //              FACEBOOK

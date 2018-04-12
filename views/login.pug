@@ -8,14 +8,14 @@ block sideNav
     .collapse.navbar-collapse
       ul.navbar-nav
         li.nav-item
-          a.nav-link(href= "/signup") Sign up 
+          a.nav-link(href= "/signup") Registrarme
         
 block content
   section.padded-section.p-3.p-lg-5.d-flex.d-column
     .my-auto
       h2 
         span.fa.fa-sign-in 
-        | &nbsp; Login
+        | &nbsp; Entrar
         
       if errors
         ul
@@ -42,14 +42,14 @@ block content
             required= true,
           )
           div(style={margin: '3rem 0 0'})
-            button.btn.btn-primary(type='submit', style={"margin-right": '30px'}) Login
+            button.btn.btn-primary(type='submit', style={"margin-right": '30px'}) Entrar
             a.btn.btn-primary(href="/auth/facebook")
               span.fa.fa-facebook
               | &nbsp; Continuar con Facebook
 
         hr
         p No tenés cuenta? &nbsp;
-          a(href="/signup") Sign up
+          a(href="/signup") Registrarme
 
     //- script.
     //-   function checkForm() {

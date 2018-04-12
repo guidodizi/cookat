@@ -2,14 +2,18 @@ extends layout
 
 block content
   section.padded-section.p-3.p-lg-5.d-flex.d-column
-    .my-auto
-      h2 Chef: #{chef.user.name}
+    .my-auto.col-sm-8
+      h2 
+        span.fa.fa-address-card
+        | &nbsp; #{title}
       
       p #[strong Email:] #{chef.user.email}
       p #[strong Teléfono:] #{chef.phone}
       p #[strong Fecha de nacimiento:] #{chef.date_of_birth_formatted}
       p #[strong Descripcion de estilo de cocina:] #{chef.description}
-    
+      hr
+      p
+        a(href=chef.url+'/update') Editar chef 
     //- if author_books.length
     //-   div(style='margin-left:20px;margin-top:20px')
 
@@ -27,6 +31,5 @@ block content
     //- hr
     //- p
     //-   a(href=chef.url+'/delete') Delete author 
-    //- p
-    //-   a(href=chef.url+'/update') Update author 
+      
 
