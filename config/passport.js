@@ -56,12 +56,12 @@ module.exports = function(passport) {
               newUser.facebook.id = profile.id; // set the users facebook id
               newUser.facebook.token = token; // we will save the token that facebook provides to the user
               newUser.facebook.name =
-                profile.name.givenName + " " + profile.name.familyName; // look at the passport user profile to see how names are returned
+                profile.name.givenName + " " + profile.name.familyName;
               newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
-              newUser.local.email = profile.emails[0].value;
-              newUser.local.first_name = profile.name.givenName;
-              newUser.local.last_name = profile.name.familyName;
+              newUser.main.email = profile.emails[0].value;
+              newUser.main.first_name = profile.name.givenName;
+              newUser.main.last_name = profile.name.familyName;
 
               // save our user to the database
               newUser.save(function(err) {
@@ -98,7 +98,7 @@ module.exports = function(passport) {
         process.nextTick(function() {
           // find a user whose email is the same as the forms email
           // we are checking to see if the user trying to login already exists
-          User.findOne({ "local.email": email }, function(err, user) {
+          User.findOne({ "main.email": email }, function(err, user) {
             // if there are any errors, return the error
             if (err) return done(err);
 
@@ -111,10 +111,10 @@ module.exports = function(passport) {
               var newUser = new User();
 
               // set the user's local credentials
-              newUser.local.email = email;
-              newUser.local.first_name = req.body.first_name;
-              newUser.local.last_name = req.body.last_name;
-              newUser.local.password = newUser.generateHash(password);
+              newUser.main.email = email;
+              newUser.main.first_name = req.body.first_name;
+              newUser.main.last_name = req.body.last_name;
+              newUser.main.password = newUser.generateHash(password);
 
               // save the user
               newUser.save(function(err) {
@@ -159,7 +159,7 @@ module.exports = function(passport) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ "local.email": email }, function(err, user) {
+        User.findOne({ "main.email": email }, function(err, user) {
           // if there are any errors, return the error before anything else
           if (err) return done(err);
 

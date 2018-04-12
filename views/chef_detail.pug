@@ -7,13 +7,15 @@ block content
         span.fa.fa-address-card
         | &nbsp; #{title}
       
-      p #[strong Email:] #{chef.user.email}
+      p #[strong Email:] #{chef.user.main.email}
+      p #[strong Nombre:] #{chef.user.main.first_name}
+      p #[strong Apellido:] #{chef.user.main.last_name}
       p #[strong Teléfono:] #{chef.phone}
       p #[strong Fecha de nacimiento:] #{chef.date_of_birth_formatted}
       p #[strong Descripcion de estilo de cocina:] #{chef.description}
       hr
       p
-        a(href=chef.url+'/update') Editar chef 
+        a(href=chef.url+'/update') Editar 
     //- if author_books.length
     //-   div(style='margin-left:20px;margin-top:20px')
 

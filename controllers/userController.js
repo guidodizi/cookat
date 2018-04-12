@@ -124,12 +124,12 @@ exports.update_post = [
       user._id = req.user.id;
 
       //set new values
-      user.local.email = req.body.email;
-      user.local.first_name = req.body.first_name;
-      user.local.last_name = req.body.last_name;
+      user.main.email = req.body.email;
+      user.main.first_name = req.body.first_name;
+      user.main.last_name = req.body.last_name;
 
       //keep password and facebook from user
-      user.local.password = req.user.local.password;
+      user.main.password = req.user.main.password;
       user.facebook = req.user.facebook;
 
       User.findByIdAndUpdate(req.user.id, user, function(err, new_user) {

@@ -52,7 +52,6 @@ exports.signup_post = [
 
     if (!errors.isEmpty()) {
       return res.render("signup", {
-        title: "Signup",
         user: {
           email: req.body.email,
           first_name: req.body.first_name,
@@ -82,11 +81,10 @@ exports.update_get = function(req, res, next) {
       }
       //Successful, render
       res.render("chef_update", {
-        title: "Editar Chef",
         user: {
-          email: req.user.local.email,
-          first_name: req.user.local.first_name,
-          last_name: req.user.local.last_name,
+          email: req.user.main.email,
+          first_name: req.user.main.first_name,
+          last_name: req.user.main.last_name,
           phone: chef.phone,
           date_of_birth: chef.date_of_birth,
           description: chef.description
@@ -118,7 +116,6 @@ exports.update_post = [
 
     if (!errors.isEmpty()) {
       return res.render("chef_update", {
-        title: "Editar Chef",
         user: {
           email: req.body.email,
           first_name: req.body.first_name,

@@ -84,9 +84,9 @@ module.exports = function(passport, app) {
     // put user into app.locals for easy access from templates
     if (req.user && !app.locals._user) {
       app.locals._user = {
-        email: req.user.local.email,
-        first_name: req.user.local.first_name,
-        last_name: req.user.local.last_name
+        email: req.user.main.email,
+        first_name: req.user.main.first_name,
+        last_name: req.user.main.last_name
       };
     }
     next();

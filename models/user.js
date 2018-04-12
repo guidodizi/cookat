@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 // define the schema for our user model
 var UserSchema = Schema({
-  local: {
+  main: {
     email: { type: String, required: true, min: 3, max: 100 },
     password: { type: String, min: 8, max: 100 },
     first_name: { type: String, required: true, min: 3, max: 100 },
@@ -19,13 +19,10 @@ var UserSchema = Schema({
 });
 
 UserSchema.virtual("name").get(function() {
-  return this.local.first_name + " " + this.local.last_name;
+  return this.main.first_name + " " + this.main.last_name;
 });
 UserSchema.virtual("username").get(function() {
-  return this.local.first_name + "." + this.local.last_name;
-});
-UserSchema.virtual("email").get(function() {
-  return this.facebook.email ? this.facebook.email : this.local.email;
+  return this.main.first_name + "." + this.main.last_name;
 });
 
 // methods ======================
@@ -36,7 +33,7 @@ UserSchema.methods.generateHash = function(password) {
 
 // checking if password is valid
 UserSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.local.password);
+  return bcrypt.compareSync(password, this.main.password);
 };
 
 // create the model for users and expose it to our app
