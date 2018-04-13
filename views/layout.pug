@@ -31,7 +31,7 @@ html(lang='en')
           - if (_user) {
             ul.navbar-nav
               li.nav-item
-                a.nav-link #{_user.first_name}&nbsp;#{_user.last_name}
+                a.nav-link(href= "/chef/" + _user.chef_id) #{_user.first_name}&nbsp;#{_user.last_name}
               li.nav-item
                 a.nav-link Platos
               li.nav-item
@@ -44,6 +44,8 @@ html(lang='en')
   script(type='text/javascript', src='/vendor/bootstrap.bundle.min.js')
   script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js')
   script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js')
+  script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js')
+
   script(type='text/javascript', src='/vendor/moment.min.js')
   block scripts
   

@@ -16,7 +16,7 @@ var DishSchema = new Schema({
 
   gain_percentage: { type: Number, required: true, min: 0 },
 
-  image_url: { type: String, required: true, min: 3, max: 500 },
+  // image_url: { type: String, required: true, min: 3, max: 500 },
   description: { type: String, required: true, min: 3, max: 1000 },
   needed_tools: { type: String, required: true, min: 3, max: 1000 },
   needed_space: { type: String, required: true, min: 3, max: 1000 },

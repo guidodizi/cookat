@@ -11,7 +11,7 @@ block content
           for error in errors
             li.error-msg!= error.msg
 
-      form(method='POST' action='' onsubmit='onSubmit()')
+      form#signup(method='POST' action='' )
         div.form-group
           label(for='email') Email:
           input#email.form-control(
@@ -20,6 +20,8 @@ block content
             name='email', 
             required= true,
             value=(user === undefined ? '' : user.email)
+            data-validation="email"
+            data-validation-error-msg="Email ingresado no es valido"            
           )
         div.form-group
           label(for='first_name') Nombre:
@@ -29,6 +31,9 @@ block content
             name='first_name',
             required= true,          
             value=(user === undefined ? '' : user.first_name)
+            data-validation="length"
+            data-validation-length="min1"
+            data-validation-error-msg="Debes ingresar tu nombre"                        
           )
           
         div.form-group
@@ -39,6 +44,9 @@ block content
             name='last_name', 
             required= true,          
             value=(user === undefined ? '' : user.last_name)
+            data-validation="length"
+            data-validation-length="min1"
+            data-validation-error-msg="Debes ingresar tu apellido"                                    
           )
 
         div.form-group
@@ -49,6 +57,8 @@ block content
             name='phone', 
             required= true,          
             value=(user === undefined ? '' : user.phone)
+            data-validation="number"
+            data-validation-error-msg="Debes ingresar tu celular"                                    
           )
         
         div.form-group
@@ -60,21 +70,30 @@ block content
               name='date_of_birth', 
               required= true,          
               value=(user === undefined ? '' : moment(user.date_of_birth).format("DD/MM/YYYY"))
+              data-validation="birthdate" 
+              data-validation-format="dd/mm/yyyy"
+              data-validation-error-msg="Fecha de nacimiento no válida. El formato debe ser DD/MM/YYYY"                                      
             )
             div.input-group-addon(style= "background-color: #e1e1e1; border-radius: 2px;")
               span.fa.fa-calendar(style= "color: black; padding: 8px;")
+
         div.form-group
-          label(for='description') Descripcion de tu estilo de cocina:
+          label(for='description') Carta de presentación:
           textarea#description.form-control(
-            placeholder='Cuentanos sobre tu cocina',
+            placeholder='Cuentanos sobre ti y tu cocina. Requerímos entre 100 y 500 caracteres.',
             name="description",
             cols="30", 
             rows="10", 
-            required= true,          
+            required= true,
+            data-validation="length" 
+            data-validation-length="100-500"
+            data-validation-error-msg="Tu carta de presentación debe tener entre 100 y 500 caracteres"
           ) #{(user === undefined ? '' : user.description)}
         br
           
         button.btn.btn-primary(type='submit') Ingresar
+        a(href="/chef/"+ _user.chef_id, style="padding-left: 15px;")
+          button.btn Cancelar
         hr
 
 block scripts
@@ -85,9 +104,20 @@ block scripts
       orientation: "bottom auto",
       language: 'es'
     });
-    function onSubmit (){
-      const date_array = $('#date_of_birth')[0].value.split("/");
-      date_array[0] = +date_array[0]
-      const date = new Date(date_array[2] + "-" + date_array[1] + "-" + date_array[0]).toISOString();
-      $('#date_of_birth')[0].value = date;
-    }
+     $.validate({
+      form: "#signup",
+      modules: "date, security",
+      onModulesLoaded : function() {
+        var optionalConfig = {
+          fontSize: '12pt',
+          padding: '4px',
+          display: 'flex',
+          bad : 'Very bad',
+          weak : 'Weak',
+          good : 'Good',
+          strong : 'Strong'
+        };
+
+        $('input[name="password"]').displayPasswordStrength(optionalConfig);
+      }
+    })

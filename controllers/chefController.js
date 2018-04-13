@@ -30,8 +30,8 @@ exports.signup_get = function(req, res, next) {
 };
 
 exports.signup_post = [
-  body("description", " Debes ingresar una descripcion de tu estilo de cocina.")
-    .isLength({ min: 1 })
+  body("description", "Tu descripcion debe tener entre 100 y 500 caracteres")
+    .isLength({ min: 100, max: 500 })
     .trim(),
   body("phone")
     .isLength({ min: 1 })
@@ -95,7 +95,7 @@ exports.update_get = function(req, res, next) {
 
 exports.update_post = [
   body("description", " Debes ingresar una descripcion de tu estilo de cocina.")
-    .isLength({ min: 1 })
+    .isLength({ min: 100, max: 500 })
     .trim(),
   body("phone")
     .isLength({ min: 1 })
@@ -138,7 +138,7 @@ exports.update_post = [
 
       Chef.findByIdAndUpdate(req.params.id, chef, function(err, new_chef) {
         if (err) return next(err);
-        res.redirect(new_chef.url);
+        next();
       });
     }
   }

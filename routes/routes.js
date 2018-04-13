@@ -83,11 +83,15 @@ module.exports = function(passport, app) {
   router.get("*", isLoggedIn, function(req, res, next) {
     // put user into app.locals for easy access from templates
     if (req.user && !app.locals._user) {
-      app.locals._user = {
-        email: req.user.main.email,
-        first_name: req.user.main.first_name,
-        last_name: req.user.main.last_name
-      };
+      Chef.findOne({ user: req.user.id }).exec((err, chef) => {
+        //set on app locals user information
+        app.locals._user = {
+          email: req.user.main.email,
+          first_name: req.user.main.first_name,
+          last_name: req.user.main.last_name,
+          chef_id: chef.id
+        };
+      });
     }
     next();
   });
@@ -121,13 +125,40 @@ module.exports = function(passport, app) {
   /*GET chef detail page */
   router.get("/chef/:id", isLoggedIn, chef_controller.detail_get);
 
-  /*GET chef update page */
+  /*Chef update page */
   router.get("/chef/:id/update", isLoggedIn, chef_controller.update_get);
   router.post(
     "/chef/:id/update",
     isLoggedIn,
     user_controller.update_post,
-    chef_controller.update_post
+    chef_controller.update_post,
+    (req, res, next) => {
+      // update user in app.locals
+      if (req.user) {
+        Chef.findOne({ user: req.user.id }).exec((err, chef) => {
+          //set on app locals user information
+          app.locals._user = {
+            email: req.body.email,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            chef_id: chef.id
+          };
+          res.redirect("/");
+        });
+      }
+    }
+  );
+
+  /*Chef change password page */
+  router.get(
+    "/chef/:id/password_update",
+    isLoggedIn,
+    user_controller.password_update_get
+  );
+  router.post(
+    "/chef/:id/password_update",
+    isLoggedIn,
+    user_controller.password_update_post
   );
 
   // =====================================
