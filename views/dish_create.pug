@@ -1,0 +1,204 @@
+extends layout
+block content
+  section.padded-section.p-3.p-lg-5.d-column
+    .my-auto.col-sm-8
+      h2 
+        span.fa.fa-edit
+        | &nbsp; Crear Plato
+        
+      if errors
+        ul
+          for error in errors
+            li.error-msg!= error.msg
+
+      form#create_dish(method='POST' action='' )
+        h3 Ingredientes
+        div.form-group
+          label(for='dish_ingredient') Ingrediente:
+          select#dish_ingredient.form-control(type='select' placeholder='Elegir ingrediente' name='dish_ingredient' required='true' )
+            for ingredient in ingredients
+              option(value=ingredient._id) #{ingredient.name}
+            
+              //- if dish
+              //-   //- //- Handle GET form, where book.author is an object, and POST form, where it is a string.
+              //-   //- option(
+              //-   //-   value=author._id
+              //-   //-   selected=(
+              //-   //-     author._id.toString()==book.author._id
+              //-   //-     || author._id.toString()==book.author
+              //-   //-   ) ? 'selected' : false
+              //-   //- ) #{author.name}
+              //- else
+
+        br
+        hr
+        br
+        h3 Información del plato        
+        div.form-group
+          label(for='name') Nombre de Plato:
+          input#name.form-control(
+            type='text', 
+            placeholder='Nombra tu plato', 
+            name='name', 
+            required= true,
+            value=(dish === undefined ? '' : dish.name)      
+          )
+        div.form-group
+          label(for='people_fed') Gente que come de esta receta:        
+          .input-group.mb-2
+            input#people_fed.form-control(
+              type='number', 
+              min= 0,
+              name='people_fed',
+              required= true,          
+              value=(dish === undefined ? 0 : dish.people_fed)                    
+            )
+            .input-group-append
+              .input-group-text personas
+        div.form-group
+          label(for='time_prepare') Tiempo de preparación previo al evento:
+          .input-group.mb-2          
+            input#time_prepare.form-control(
+              type='number', 
+              min= 0,
+              name='time_prepare',
+              required= true,          
+              value=(dish === undefined ? 0 : dish.time_prepare)                    
+            )
+            .input-group-append
+                .input-group-text minutos
+          
+        div.form-group
+          label(for='time_event') Tiempo de preparación en el evento:
+          .input-group.mb-2                    
+            input#time_event.form-control(
+              type='number', 
+              min= 0,
+              name='time_event',
+              required= true,          
+              value=(dish === undefined ? 0 : dish.time_event)                    
+            ) 
+            .input-group-append
+              .input-group-text minutos
+        div.form-group
+          label(for='hourly_price') Precio por hora de trabajo en este plato:
+          .input-group.mb-2                    
+            input#hourly_price.form-control(
+              type='number', 
+              min= 0,
+              name='hourly_price',
+              required= true,          
+              value=(dish === undefined ? 0 : dish.hourly_price)                    
+            )
+            .input-group-append
+              .input-group-text $/hora         
+        div.form-group
+          label(for='gain_percentage') Porcentaje de ganancia:
+          .input-group.mb-2                    
+            input#gain_percentage.form-control(
+              type='number', 
+              min= 0,
+              name='gain_percentage',
+              required= true,          
+              value=(dish === undefined ? 0 : dish.gain_percentage)                    
+            )
+            .input-group-append
+              .input-group-text %         
+        div.form-group
+          label(for='description') Descripcion del plato:
+          textarea#description.form-control(
+            placeholder='Describe lo mejor posible tu plato. Una buena descripcion ayuda a que los usuarios contraten tu servicios!',
+            name="description",
+            cols="30", 
+            rows="5", 
+            required= true,
+          ) #{(dish === undefined ? '' : dish.description)}
+        div.form-group
+          label(for='needed_tools') Utencillos necesarios para hacer servicio:
+          textarea#needed_tools.form-control(
+            placeholder='Explique claramente que cosas precisas que la casa tenga para poder hacer tu servicio. Ej: Hornallas, parrilla, vajilla, etc...',
+            name="needed_tools",
+            cols="30", 
+            rows="5", 
+            required= true,
+          ) #{(dish === undefined ? '' : dish.needed_tools)}
+        div.form-group
+          label(for='needed_space') Espacios necesarios para hacer servicio:
+          textarea#needed_space.form-control(
+            placeholder='Explique claramente que condiciones de espacio se precisan para poder hacer tu servicio. Ej: Lugar exterior, amplia mesada afuera, etc...',
+            name="needed_space",
+            cols="30", 
+            rows="10", 
+            required= true,
+          ) #{(dish === undefined ? '' : dish.needed_space)}
+        div.form-group
+          label(for='max_servings') Gente máxima para la cual harías este plato:
+          .input-group.mb-2                    
+            input#max_servings.form-control(
+              type='number', 
+              min= 0,
+              name='max_servings',
+              required= true,          
+              value=(dish === undefined ? 0 : dish.max_servings)                    
+            )
+            .input-group-append
+              .input-group-text personas
+        div.form-group
+          label(for='min_servings') Gente mínima para la cual harías este plato:
+          .input-group.mb-2                    
+            input#min_servings.form-control(
+              type='number', 
+              min= 0,
+              name='min_servings',
+              required= true,          
+              value=(dish === undefined ? 0 : dish.min_servings)                    
+            )
+            .input-group-append
+              .input-group-text personas
+        div.form-group
+          label(for='days_in_advance') Días de antelación para poder contratar el servicio:
+          .input-group.mb-2                    
+            input#days_in_advance.form-control(
+              type='number', 
+              min= 0,
+              name='days_in_advance',
+              required= true,          
+              value=(dish === undefined ? 0 : dish.days_in_advance)                    
+            )
+            .input-group-append
+              .input-group-text días
+        div.form-group
+        label Condimentos:
+          div.form-check
+            input.form-check-input(
+              type='checkbox', 
+              name='salt', 
+              checked=(dish === undefined ? false : dish.salt) 
+            )
+            label.form-check-label(for='salt') Contiene sal?
+          div.form-check
+            input.form-check-input(
+              type='checkbox', 
+              name='pepper', 
+              checked=(dish === undefined ? false : dish.pepper) 
+            )
+            label.form-check-label(for='pepper') Contiene pimienta?
+        
+        div.form-group
+          label(for='observations') Observaciones:
+          textarea#observations.form-control(
+            placeholder='¿Algo que quieras agregar?',
+            name="observations",
+            cols="30", 
+            rows="5", 
+          ) #{(dish === undefined ? '' : dish.observations)}
+        br
+          
+        button.btn.btn-primary(type='submit') Ingresar
+        a(href="/chef/"+ _user.chef_id, style="padding-left: 15px;")
+          button.btn Cancelar
+        hr
+
+block scripts
+  script.
+   

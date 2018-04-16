@@ -12,8 +12,21 @@ a {
   color: #9a9a9a
 }
 
+::placeholer {
+  color: rgb(179, 179, 179) !important
+}
+::-webkit-input-placeholder {
+  color: rgb(179, 179, 179) !important
+}
+::-moz-placeholder {
+  color: rgb(179, 179, 179) !important
+}
 .error-msg {
   color: rgb(221, 22, 22);
+}
+
+label {
+  color: #495057
 }
 
 .image {

@@ -11,7 +11,7 @@ block content
           for error in errors
             li.error-msg!= error.msg
 
-      form#signup(method='POST' action='' )
+      form#update_chef(method='POST' action='' )
         div.form-group
           label(for='email') Email:
           input#email.form-control(
@@ -105,7 +105,7 @@ block scripts
       language: 'es'
     });
      $.validate({
-      form: "#signup",
+      form: "#update_chef",
       modules: "date, security",
       onModulesLoaded : function() {
         var optionalConfig = {

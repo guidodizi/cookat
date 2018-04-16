@@ -1,6 +1,7 @@
 var express = require("express");
 const user_controller = require("../controllers/userController");
 const chef_controller = require("../controllers/chefController");
+const dish_controller = require("../controllers/dishController");
 const Chef = require("../models/chef");
 
 module.exports = function(passport, app) {
@@ -111,11 +112,13 @@ module.exports = function(passport, app) {
    *                DISH
    * =============================================
    */
-  /* GET create a new dish. */
-  router.get("/dish", isLoggedIn);
+  /* view all dishes. */
+  router.get("/dish", isLoggedIn, dish_controller.list_get);
 
-  /* POST create a new dish*/
-  router.post("/dish", isLoggedIn);
+  /* GET create new dishes. */
+  router.get("/dish/create", isLoggedIn, dish_controller.create_get);
+  /* POST create new dish*/
+  router.post("/dish/create", isLoggedIn, dish_controller.create_post);
 
   /**
    * =============================================
