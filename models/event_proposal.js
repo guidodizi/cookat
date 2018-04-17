@@ -21,5 +21,10 @@ var EventProposalSchema = new Schema({
   observations: { type: String, min: 1 }
 });
 
+
+EventProposalSchema.virtual("url").get(function () {
+  return "/event_proposal/" + this._id;
+});
+
 // Export model.
 module.exports = mongoose.model("EventProposal", EventProposalSchema);

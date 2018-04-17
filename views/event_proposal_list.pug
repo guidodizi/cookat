@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  section.padded-section.p-3.p-lg-5.d-flex.d-column
+    .my-auto
+      h2 
+        span.fa.fa-address-card 
+        | &nbsp; Tu lista de propuestas para eventos
+      
+      if (event_proposals)
+        ul
+        for event in event_proposals
+          li 
+            a(href=event.url)!=event.name
+

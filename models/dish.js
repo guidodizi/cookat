@@ -14,7 +14,7 @@ var DishSchema = new Schema({
       measure: {
         type: String,
         required: true,
-        enum: enum_measures
+        enum: Object.getOwnPropertyNames(enum_measures)
       },
       amount: { type: Number, required: true },
       cost: { type: Number, required: true }

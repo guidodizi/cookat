@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  section.padded-section.p-3.p-lg-5.d-flex.d-column
+    .my-auto.col-sm-8
+      h2 
+        span.fa.fa-address-card
+        | &nbsp; #{event_proposal.name}
+      
+      p #[strong Descripción:] #{event_proposal.description}
+      p #[strong Utensillos necesarios:] #{event_proposal.needed_tools}
+      p #[strong Requerimientos de espacio:] #{event_proposal.needed_space}
+      p #[strong Máximos comensales:] #{event_proposal.max_servings}
+      p #[strong Mínimos comensales:] #{event_proposal.min_servings}
+      p #[strong Días de anticipación:] #{event_proposal.day_in_advance}
+      p #[strong Observaciones:] #{event_proposal.observations}
+      hr
+      p
+        a(href=chef.url+'/update') Editar 
+      
+

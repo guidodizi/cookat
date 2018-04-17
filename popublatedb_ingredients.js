@@ -5,6 +5,7 @@ var async = require("async");
 var Ingredient = require("./models/ingredient");
 var Dish = require("./models/dish");
 var EventProposal = require("./models/event_proposal");
+var Chef = require("./models/chef");
 const enum_measure = require('./enums/mesures')
 
 console.log(process.env.MONGODB_URI);
@@ -65,6 +66,34 @@ function dishCreate(dish, cb) {
   });
 }
 
+function eventProposalCreate(cb) {
+  var event_proposal = new EventProposal({
+    name: "Almuerzo Toscano",
+    appetizers: dishes.filter(d => d.name == "Brusquettas de Palta"),
+    dishes: dishes.filter(d => d.name == "Rissoto de Hongos"),
+    description: "Un evento al mejor estilo italiano",
+    needed_tools: "Una cocina de familia",
+    needed_space: "nada en especial",
+
+    max_servings: 25,
+    min_servings: 4,
+
+    day_in_advance: 5,
+
+    observations: ""
+  });
+
+  event_proposal.save(function (err) {
+    if (err) {
+      cb(err, null);
+      return;
+    }
+    console.log("New Event: " + event_proposal);
+    cb(null, event_proposal);
+
+  });
+}
+
 function ingredientsCreate(cb) {
   async.parallel(
     [
@@ -116,43 +145,43 @@ function dishesCreate(cb) {
           name: "Rissoto de Hongos",
           dish_ingredients: [
             {
-              ingredient: ingredients.filter(i => i.name == 'Arroz')._id,
+              ingredient: ingredients.filter(i => i.name == 'Arroz')[0]._id,
               measure: enum_measure.tazas,
               amount: 1.5,
               cost: 20
             },
             {
-              ingredient: ingredients.filter(i => i.name == 'Ajo')._id,
+              ingredient: ingredients.filter(i => i.name == 'Ajo')[0]._id,
               measure: enum_measure.unidades,
               amount: 2,
               cost: 5
             },
             {
-              ingredient: ingredients.filter(i => i.name == 'Hongos')._id,
+              ingredient: ingredients.filter(i => i.name == 'Hongos')[0]._id,
               measure: enum_measure.gr,
               amount: 400,
               cost: 100
             },
             {
-              ingredient: ingredients.filter(i => i.name == 'Cebolla')._id,
+              ingredient: ingredients.filter(i => i.name == 'Cebolla')[0]._id,
               measure: enum_measure.unidades,
               amount: 1,
               cost: 8
             },
             {
-              ingredient: ingredients.filter(i => i.name == 'Queso Parmesano')._id,
+              ingredient: ingredients.filter(i => i.name == 'Queso Parmesano')[0]._id,
               measure: enum_measure.gr,
               amount: 100,
               cost: 125
             },
             {
-              ingredient: ingredients.filter(i => i.name == 'Caldo')._id,
+              ingredient: ingredients.filter(i => i.name == 'Caldo')[0]._id,
               measure: enum_measure.litros,
               amount: 1,
               cost: 35
             },
             {
-              ingredient: ingredients.filter(i => i.name == 'Vino Blanco')._id,
+              ingredient: ingredients.filter(i => i.name == 'Vino Blanco')[0]._id,
               measure: enum_measure.ml,
               amount: 300,
               cost: 150
@@ -170,7 +199,44 @@ function dishesCreate(cb) {
         }, callback);
       },
       function (callback) {
-        dishCreate("Ajo", callback);
+        dishCreate({
+          name: "Brusquettas de Palta",
+          dish_ingredients: [
+            {
+              ingredient: ingredients.filter(i => i.name == 'Pan')[0]._id,
+              measure: enum_measure.unidades,
+              amount: 1,
+              cost: 35
+            },
+            {
+              ingredient: ingredients.filter(i => i.name == 'Queso de Cabra')[0]._id,
+              measure: enum_measure.gr,
+              amount: 100,
+              cost: 170
+            },
+            {
+              ingredient: ingredients.filter(i => i.name == 'Palta')[0]._id,
+              measure: enum_measure.unidades,
+              amount: 2,
+              cost: 150
+            },
+            {
+              ingredient: ingredients.filter(i => i.name == 'Tomate Cherry')[0]._id,
+              measure: enum_measure.unidades,
+              amount: 20,
+              cost: 200
+            }
+          ],
+          salt: true,
+          pepper: false,
+          people_fed: 4,
+          time_prepare: 45,
+          time_event: 10,
+          hourly_price: 100,
+          gain_percentage: 40,
+          description: "Frescas brusquettas de palta y tomates, acompañadas de un gustoso queso de cabra",
+          observations: ''
+        }, callback);
       },
     ],
     // optional callback
@@ -178,16 +244,31 @@ function dishesCreate(cb) {
   );
 }
 
-async.series(
-  [ingredientsCreate,
-  ],
-  // Optional callback
-  function (err, results) {
-    if (err) {
-      console.log("FINAL ERR: " + err);
-    } else {
-    }
-    // All done, disconnect from database
-    mongoose.connection.close();
-  }
-);
+EventProposal.findOne(function (err, ep) {
+  if (err) return err;
+  Chef.findById('5acfabc3d0415c338c2fa3ab', function (err, chef) {
+    if (err) return err;
+    chef.event_proposals.push(ep._id);
+    chef.save(function (err, chef) {
+      if (err) return err;
+      console.log('SUCCESS!: ' + JSON.stringify(chef))
+    })
+  })
+})
+
+// async.series(
+//   [
+//     ingredientsCreate,
+//     dishesCreate,
+//     eventProposalCreate
+//   ],
+//   // Optional callback
+//   function (err, results) {
+//     if (err) {
+//       console.log("FINAL ERR: " + err);
+//     } else {
+//     }
+//     // All done, disconnect from database
+//     mongoose.connection.close();
+//   }
+// );

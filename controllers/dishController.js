@@ -1,14 +1,13 @@
 const Ingredient = require("../models/ingredient");
-const Chef = require("../models/chef");
 
 const { body, validationResult } = require("express-validator/check");
 const { sanitizeBody } = require("express-validator/filter");
 
-exports.list_get = function(req, res, next) {
+exports.list_get = function (req, res, next) {
   res.render("dish_list");
 };
 
-exports.create_get = function(req, res, next) {
+exports.create_get = function (req, res, next) {
   Ingredient.find({}, "name default_measure").exec((err, ingredients) => {
     res.render("dish_create", { ingredients: ingredients });
   });
@@ -46,7 +45,7 @@ exports.create_post = [
 
     //There are errors
     if (!errors.isEmpty()) {
-      Chef.find(function(err, result) {
+      Chef.find(function (err, result) {
         if (err) {
           return next(err);
         }
@@ -60,7 +59,7 @@ exports.create_post = [
       return;
     } else {
       //Data from review is valid
-      review.save(function(err) {
+      review.save(function (err) {
         if (err) {
           return next(err);
         }
@@ -71,6 +70,6 @@ exports.create_post = [
   }
 ];
 
-exports.review_thanks_get = function(req, res, next) {
+exports.review_thanks_get = function (req, res, next) {
   res.render("review_thanks", { title: "Gracias por tu reseña" });
 };

@@ -9,14 +9,15 @@ var ChefSchema = new Schema({
   date_of_birth: { type: Date, required: true },
   description: { type: String, required: true, min: 3, max: 100 },
 
+  event_proposals: [{ type: Schema.Types.ObjectId, ref: "EventProposal" }],
   dishes: [{ type: Schema.Types.ObjectId, ref: "Dish" }]
 });
 
-ChefSchema.virtual("url").get(function() {
+ChefSchema.virtual("url").get(function () {
   return "/chef/" + this._id;
 });
 
-ChefSchema.virtual("date_of_birth_formatted").get(function() {
+ChefSchema.virtual("date_of_birth_formatted").get(function () {
   return this.date_of_birth ? moment(this.date_of_birth).format() : "";
 });
 

@@ -1,10 +1,12 @@
-var express = require("express");
+const express = require("express");
+const app = require("../app");
 const user_controller = require("../controllers/userController");
+const event_proposals_controller = require("../controllers/eventProposalController");
 const chef_controller = require("../controllers/chefController");
 const dish_controller = require("../controllers/dishController");
 const Chef = require("../models/chef");
 
-module.exports = function(passport, app) {
+module.exports = function (passport) {
   var router = express.Router();
   /**
    * =============================================
@@ -18,15 +20,15 @@ module.exports = function(passport, app) {
     isLoggedOut,
     user_controller.signup_post,
     chef_controller.signup_post,
-    function(req, res, next) {
-      passport.authenticate("local-signup", function(err, user, info) {
+    function (req, res, next) {
+      passport.authenticate("local-signup", function (err, user, info) {
         if (err) return next(err);
         if (!user) {
           return res.render("signup", {
             errors: info ? [info] : []
           });
         }
-        req.logIn(user, function(err) {
+        req.logIn(user, function (err) {
           if (err) {
             return next(err);
           }
@@ -50,15 +52,15 @@ module.exports = function(passport, app) {
 
   router.get("/login", isLoggedOut, user_controller.login_get);
 
-  router.post("/login", isLoggedOut, function(req, res, next) {
-    passport.authenticate("local-login", function(err, user, info) {
+  router.post("/login", isLoggedOut, function (req, res, next) {
+    passport.authenticate("local-login", function (err, user, info) {
       if (err) return next(err);
       if (!user) {
         return res.render("login", {
           errors: info ? [info] : []
         });
       }
-      req.logIn(user, function(err) {
+      req.logIn(user, function (err) {
         if (err) {
           return next(err);
         }
@@ -70,7 +72,7 @@ module.exports = function(passport, app) {
   });
 
   // route for logging out
-  router.get("/logout", isLoggedIn, function(req, res) {
+  router.get("/logout", isLoggedIn, function (req, res) {
     app.locals._user = null;
     req.logout();
     res.redirect("/");
@@ -81,7 +83,7 @@ module.exports = function(passport, app) {
    *                COMMON
    * =============================================
    */
-  router.get("*", isLoggedIn, function(req, res, next) {
+  router.get("*", isLoggedIn, function (req, res, next) {
     // put user into app.locals for easy access from templates
     if (req.user && !app.locals._user) {
       Chef.findOne({ user: req.user.id }).exec((err, chef) => {
@@ -106,6 +108,20 @@ module.exports = function(passport, app) {
       return res.redirect("/chef/" + chef.id);
     });
   });
+
+  /**
+   * =============================================
+   *                EVENT PROPOSALS
+   * =============================================
+   */
+  /* view all dishes. */
+  router.get("/event_proposals", isLoggedIn, event_proposals_controller.list_get);
+  router.get("/event_proposal/:id", isLoggedIn, event_proposals_controller.detail_get);
+
+  /* GET create new dishes. */
+  router.get("/event_proposals/create", isLoggedIn, dish_controller.create_get);
+  /* POST create new dish*/
+  router.post("/event_proposals/create", isLoggedIn, dish_controller.create_post);
 
   /**
    * =============================================
@@ -181,7 +197,7 @@ module.exports = function(passport, app) {
     passport.authenticate("facebook", {
       failureRedirect: "/"
     }),
-    function(req, res, next) {
+    function (req, res, next) {
       if (req.user) res.redirect("/chef/" + req.user.id);
     }
   );
