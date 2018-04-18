@@ -52,7 +52,7 @@ DishSchema.virtual("sellprice").get(function () {
   return Math.round(value * factor) / factor;
 })
 
-DishSchema.virtual("total_earnings").get(function () {
+DishSchema.virtual("earnings").get(function () {
   return this.sellprice - this.cost;
 })
 
@@ -64,6 +64,10 @@ DishSchema.virtual("sellprice_per_person").get(function () {
   var factor = Math.pow(10, -1);
   var value = (this.sellprice / this.people_fed);
   return Math.round(value * factor) / factor;
+})
+
+DishSchema.virtual("earnings_per_person").get(function () {
+  return this.sellprice_per_person - this.cost_per_person;
 })
 
 

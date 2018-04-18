@@ -24,11 +24,9 @@ block content
                 div.card-body
                   h5.card-title(style="text-transform:inital;") #{appetizer.name}
                   .card-text
-                    p #[strong Cantidad de porciones:] #{appetizer.people_fed}
                     p #[strong Precio por persona:] $#{appetizer.sellprice_per_person}
-                    p #[strong Precio:] $#{appetizer.sellprice}
-                    p #[strong Costo:] $#{appetizer.cost}
-                    p #[strong Ganancia:] $#{appetizer.total_earnings}
+                    p #[strong Costo por persona:] $#{appetizer.cost_per_person}
+                    p #[strong Ganancia por persona:] $#{appetizer.earnings_per_person}
                   a.btn.btn-primary(href=appetizer.url + "/update") Editar
 
         if (event_proposal.dishes)
@@ -39,11 +37,9 @@ block content
                 div.card-body
                   h5.card-title(style="text-transform:inital;") #{dish.name}
                   .card-text
-                    p #[strong Cantidad de porciones:] #{dish.people_fed}
-                    p #[strong Precio por persona:] $#{dish.sellprice_per_person}                    
-                    p #[strong Precio:] $#{dish.sellprice}
-                    p #[strong Costo:] $#{dish.cost}
-                    p #[strong Ganancia:] $#{dish.total_earnings}
+                    p #[strong Precio por persona:] $#{dish.sellprice_per_person}
+                    p #[strong Costo por persona:] $#{dish.cost_per_person}
+                    p #[strong Ganancia por persona:] $#{dish.earnings_per_person}
                   a.btn.btn-primary(href=dish.url + "/update") Editar
       br
       hr
