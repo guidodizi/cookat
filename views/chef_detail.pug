@@ -14,26 +14,8 @@ block content
       p #[strong Fecha de nacimiento:] #{chef.date_of_birth_formatted}
       p #[strong Descripcion de estilo de cocina:] #{chef.description}
       hr
-      p
-        a(href=chef.url+'/update') Editar 
-      p        
-        a(href=chef.url+'/password_update') Cambiar contraseña 
-    //- if author_books.length
-    //-   div(style='margin-left:20px;margin-top:20px')
-
-    //-     h4 Books
-        
-    //-     dl
-    //-     each book in author_books
-    //-       dt 
-    //-         a(href=book.url) #{book.title}
-    //-       dd #{book.summary}
-
-    //- else
-    //-     p There are no books of this author in the library.
-
-    //- hr
-    //- p
-    //-   a(href=chef.url+'/delete') Delete author 
-      
-
+      div.btn-group
+        a(href=chef.url+'/update')
+          button.btn.btn-light Editar 
+        a(href=chef.url+'/password_update') 
+          button.btn.btn-light Cambiar contraseña 

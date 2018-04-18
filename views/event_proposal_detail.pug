@@ -2,7 +2,7 @@ extends layout
 
 block content
   section.padded-section.p-3.p-lg-5.d-flex.d-column
-    .my-auto.col-sm-8
+    .my-auto.col-sm-12
       h2 
         span.fa.fa-address-card
         | &nbsp; #{event_proposal.name}
@@ -15,7 +15,67 @@ block content
       p #[strong Días de anticipación:] #{event_proposal.day_in_advance}
       p #[strong Observaciones:] #{event_proposal.observations}
       hr
-      p
-        a(href=chef.url+'/update') Editar 
+      div
+        if (event_proposal.appetizers)
+          h4 Entradas:
+          div(style="display: inline-grid; grid-template-columns: auto auto auto; margin-bottom:25px;")
+            for appetizer in event_proposal.appetizers
+              div.card(style="width:18rem;")
+                div.card-body
+                  h5.card-title(style="text-transform:inital;") #{appetizer.name}
+                  .card-text
+                    p #[strong Cantidad de porciones:] #{appetizer.people_fed}
+                    p #[strong Precio por persona:] $#{appetizer.sellprice_per_person}
+                    p #[strong Precio:] $#{appetizer.sellprice}
+                    p #[strong Costo:] $#{appetizer.cost}
+                    p #[strong Ganancia:] $#{appetizer.total_earnings}
+                  a.btn.btn-primary(href=appetizer.url + "/update") Editar
+
+        if (event_proposal.dishes)
+          h4 Plato Principal:
+          div(style="display: inline-grid; grid-template-columns: auto auto auto;")
+            for dish in event_proposal.dishes
+              div.card(style="width:18rem;")
+                div.card-body
+                  h5.card-title(style="text-transform:inital;") #{dish.name}
+                  .card-text
+                    p #[strong Cantidad de porciones:] #{dish.people_fed}
+                    p #[strong Precio por persona:] $#{dish.sellprice_per_person}                    
+                    p #[strong Precio:] $#{dish.sellprice}
+                    p #[strong Costo:] $#{dish.cost}
+                    p #[strong Ganancia:] $#{dish.total_earnings}
+                  a.btn.btn-primary(href=dish.url + "/update") Editar
+      br
+      hr
+      br
+      if (event_proposal.dishes && event_proposal.appetizers)
+        h2 Balance
+        br
+        h4 Mínima cantidad
+        h6 Precio de venta total:
+        p Calcular
+        br
+        h6 Costo total:
+        p Calcular            
+        br
+        h6 Ganancia:
+        p Calcular            
+        br
+        h4 Máxima cantidad
+        h6 Precio de venta total:
+        p Calcular            
+        br
+        h6 Costo total:
+        p Calcular            
+        br
+        h6 Ganancia:
+        p Calcular            
+
+        
+      .btn-group
+        a(href=event_proposal.url+'/update') 
+          button.btn.btn-light Editar 
+        a(href=event_proposal.url+'/delete') 
+          button.btn.btn-danger Borrar 
       
 

@@ -5,11 +5,14 @@ block content
     .my-auto
       h2 
         span.fa.fa-address-card 
-        | &nbsp; Tu lista de propuestas para eventos
+        | &nbsp; Tus propuestas para eventos
       
       if (event_proposals)
-        ul
-        for event in event_proposals
-          li 
-            a(href=event.url)!=event.name
+        div(style="margin-top: 50px; display: inline-grid; grid-template-columns: auto auto auto;")
+          for event in event_proposals
+            div.card(style="width:18rem;")
+              div.card-body
+                h5.card-title(style="text-transform:inital") #{event.name}
+                p.card-text #{event.description}
+                a.btn.btn-primary(href=event.url) Detalle
 

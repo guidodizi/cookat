@@ -1,3 +1,4 @@
+const Dish = require("../models/dish");
 const Ingredient = require("../models/ingredient");
 
 const { body, validationResult } = require("express-validator/check");

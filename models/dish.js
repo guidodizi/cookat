@@ -36,14 +36,41 @@ var DishSchema = new Schema({
   observations: { type: String, min: 1 }
 });
 
-DishSchema.virtual("price").get(function () {
+DishSchema.virtual("cost").get(function () {
   const ingredients_cost = this.dish_ingredients.reduce((acc, current) => {
     acc = acc + current.cost;
-  }, 0)
+    return acc
+  }, 0);
 
-  const time_cost = (this.time_prepare + this.time_event) * this.hourly_price;
-  return ingredients_cost + time_cost;
+  const time_cost = (this.time_prepare + this.time_event) * (this.hourly_price / 60);
+  return Math.round(ingredients_cost + time_cost);
 })
+
+DishSchema.virtual("sellprice").get(function () {
+  var factor = Math.pow(10, -1);
+  var value = this.cost * (+("1." + this.gain_percentage));
+  return Math.round(value * factor) / factor;
+})
+
+DishSchema.virtual("total_earnings").get(function () {
+  return this.sellprice - this.cost;
+})
+
+DishSchema.virtual("cost_per_person").get(function () {
+  return Math.round(this.cost / this.people_fed);
+})
+
+DishSchema.virtual("sellprice_per_person").get(function () {
+  var factor = Math.pow(10, -1);
+  var value = (this.sellprice / this.people_fed);
+  return Math.round(value * factor) / factor;
+})
+
+
+DishSchema.virtual("url").get(function () {
+  return "/dish/" + this.id;
+})
+
 
 // Export model.
 module.exports = mongoose.model("Dish", DishSchema);
