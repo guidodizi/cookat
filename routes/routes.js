@@ -53,8 +53,8 @@ module.exports = function (passport) {
   router.get("/login", isLoggedOut, user_controller.login_get);
 
   router.post("/login", isLoggedOut, function (req, res, next) {
-    console.log('AAAAAAAAAAAAAAAAAAAAAAA')
     passport.authenticate("local-login", function (err, user, info) {
+      console.log('AAAAAAAAAAAAAAAAAAAAAAA')
       if (err) return next(err);
       if (!user) {
         return res.render("login", {
@@ -62,10 +62,13 @@ module.exports = function (passport) {
         });
       }
       req.logIn(user, function (err) {
+        console.log('AAAAAAAAAAAAAAAAAAAAAAA')
         if (err) {
           return next(err);
         }
         Chef.findOne({ user: user.id }).exec((err, chef) => {
+          if (err) return next(err);
+          console.log('AAAAAAAAAAAAAAAAAAAAAAA')
           return res.redirect("/chef/" + chef.id);
         });
       });
