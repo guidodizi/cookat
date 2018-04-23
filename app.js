@@ -53,9 +53,22 @@ module.exports = app;
  * Route handling
  * 
  */
-var routes = require("./routes/routes")(passport);
+var signup_router = require("./routes/signup")(passport);
+var login_router = require("./routes/login")(passport);
+var logout_router = require("./routes/logout");
+// var login_facebook = require("./routes/login_facebook")(passport);
+var index_router = require("./routes/index");
+var chef_router = require("./routes/chef");
+var dish_router = require("./routes/dish");
+var event_proposal_router = require("./routes/event_proposal");
 
-app.use("/", routes);
+app.use("/signup", signup_router);
+app.use("/login", login_router);
+app.use("/logout", logout_router);
+app.use("/", index_router);
+app.use("/chef", chef_router);
+app.use("/dish", dish_router);
+app.use("/event_proposals", event_proposal_router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

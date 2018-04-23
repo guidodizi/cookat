@@ -23,7 +23,7 @@ var EventProposalSchema = new Schema({
 
 
 EventProposalSchema.virtual("url").get(function () {
-  return "/event_proposal/" + this._id;
+  return "/event_proposals/" + this._id;
 });
 
 EventProposalSchema.virtual("unit_sellprice").get(function () {

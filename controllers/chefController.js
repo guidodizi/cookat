@@ -5,7 +5,7 @@ const { sanitizeBody } = require("express-validator/filter");
 const moment = require("moment");
 
 // Display detail page for a specific Author.
-exports.detail_get = function(req, res, next) {
+exports.detail_get = function (req, res, next) {
   Chef.findById(req.params.id)
     .populate("user")
     .exec((err, chef) => {
@@ -25,7 +25,7 @@ exports.detail_get = function(req, res, next) {
     });
 };
 
-exports.signup_get = function(req, res, next) {
+exports.signup_get = function (req, res, next) {
   res.render("FB_signup_chef");
 };
 
@@ -67,7 +67,7 @@ exports.signup_post = [
   }
 ];
 
-exports.update_get = function(req, res, next) {
+exports.update_get = function (req, res, next) {
   Chef.findById(req.params.id)
     .populate("user")
     .exec((err, chef) => {
@@ -128,18 +128,21 @@ exports.update_post = [
       });
     } else {
       //keep same id of chef and same user thats signed in
-      var chef = new Chef({
-        _id: req.params.id,
-        user: req.user.id,
-        description: req.body.description,
-        phone: req.body.phone,
-        date_of_birth: req.body.date_of_birth
-      });
 
-      Chef.findByIdAndUpdate(req.params.id, chef, function(err, new_chef) {
-        if (err) return next(err);
-        next();
-      });
+      Chef.findByIdAndUpdate(req.params.id,
+        {
+          $set: {
+            user: req.user.id,
+            description: req.body.description,
+            phone: req.body.phone,
+            date_of_birth: req.body.date_of_birth
+          }
+        },
+        { new: true },
+        function (err, new_chef) {
+          if (err) return next(err);
+          next();
+        });
     }
   }
 ];
