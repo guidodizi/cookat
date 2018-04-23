@@ -25,8 +25,41 @@ a {
   color: rgb(221, 22, 22);
 }
 
+.grid {
+  display: inline-grid; 
+  grid-template-columns: auto auto auto;
+}
+
+.margin-b25 {
+  margin-bottom: 25px;
+}
+.margin-b50 {
+  margin-bottom: 50px;
+}
+.margin-t25 {
+  margin-top: 25px;
+}
+.margin-t50 {
+  margin-top: 50px;
+}
+.margin-r20 {
+  margin-right: 20px;
+}
+.margin-r30 {
+  margin-right: 30px;
+}
+.margin-l20 {
+  margin-left: 20px;
+}
+.margin-l30 {
+  margin-left: 30px;
+}
 label {
   color: #495057
+}
+
+.font-size-small{
+  font-size: 12px;
 }
 
 .image {

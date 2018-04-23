@@ -26,5 +26,32 @@ EventProposalSchema.virtual("url").get(function () {
   return "/event_proposal/" + this._id;
 });
 
+EventProposalSchema.virtual("unit_sellprice").get(function () {
+  let appetizers = this.appetizers.reduce((acc, currentValue) => {
+    return acc + currentValue.sellprice_per_person
+  }, 0);
+  let dishes = this.dishes.reduce((acc, currentValue) => {
+    return acc + currentValue.sellprice_per_person
+  }, 0);
+
+  return Math.ceil((appetizers + dishes) / 10) * 10
+})
+
+EventProposalSchema.virtual("unit_cost").get(function () {
+  let appetizers = this.appetizers.reduce((acc, currentValue) => {
+    return acc + currentValue.cost_per_person
+  }, 0);
+  let dishes = this.dishes.reduce((acc, currentValue) => {
+    return acc + currentValue.cost_per_person
+  }, 0);
+
+  return appetizers + dishes
+})
+
+EventProposalSchema.virtual("unit_earnings").get(function () {
+  return this.unit_sellprice - this.unit_cost
+})
+
+
 // Export model.
 module.exports = mongoose.model("EventProposal", EventProposalSchema);

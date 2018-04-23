@@ -36,24 +36,36 @@ var DishSchema = new Schema({
   observations: { type: String, min: 1 }
 });
 
-DishSchema.virtual("cost").get(function () {
-  const ingredients_cost = this.dish_ingredients.reduce((acc, current) => {
-    acc = acc + current.cost;
-    return acc
-  }, 0);
+// Other properties depend on this
 
-  const time_cost = (this.time_prepare + this.time_event) * (this.hourly_price / 60);
-  return Math.round(ingredients_cost + time_cost);
+DishSchema.virtual("ingredients_cost").get(function () {
+  return this.dish_ingredients.reduce((acc, current) => {
+    return acc + current.cost;
+  }, 0);
+})
+DishSchema.virtual("time_cost").get(function () {
+  return Math.round((this.time_prepare + this.time_event) * (this.hourly_price / 60));
+})
+
+DishSchema.virtual("cost").get(function () {
+  return Math.round(this.ingredients_cost + this.time_cost);
 })
 
 DishSchema.virtual("sellprice").get(function () {
-  var factor = Math.pow(10, -1);
-  var value = this.cost * (+("1." + this.gain_percentage));
-  return Math.round(value * factor) / factor;
+  return this.cost * (+("1." + this.gain_percentage));
 })
 
 DishSchema.virtual("earnings").get(function () {
   return this.sellprice - this.cost;
+})
+
+//others
+DishSchema.virtual("ingredients_cost_per_person").get(function () {
+  return Math.round(this.ingredients_cost / this.people_fed)
+})
+
+DishSchema.virtual("time_cost_per_person").get(function () {
+  return Math.round(this.time_cost / this.people_fed);
 })
 
 DishSchema.virtual("cost_per_person").get(function () {
@@ -61,19 +73,17 @@ DishSchema.virtual("cost_per_person").get(function () {
 })
 
 DishSchema.virtual("sellprice_per_person").get(function () {
-  var factor = Math.pow(10, -1);
-  var value = (this.sellprice / this.people_fed);
-  return Math.round(value * factor) / factor;
+  return Math.round(this.sellprice / this.people_fed);
 })
 
 DishSchema.virtual("earnings_per_person").get(function () {
   return this.sellprice_per_person - this.cost_per_person;
 })
 
-
 DishSchema.virtual("url").get(function () {
   return "/dish/" + this.id;
 })
+
 
 
 // Export model.

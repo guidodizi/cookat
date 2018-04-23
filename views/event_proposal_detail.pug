@@ -15,59 +15,48 @@ block content
       p #[strong Días de anticipación:] #{event_proposal.day_in_advance}
       p #[strong Observaciones:] #{event_proposal.observations}
       hr
+      h3 Balance
       div
+        div(style="display:flex;")
+          p #[strong Precio por persona:]
+          p.margin-l20 $#{event_proposal.unit_sellprice}
+        div(style="display:flex;")
+          p #[strong Ganancia por persona:]
+          p.margin-l20 $#{event_proposal.unit_earnings}
+      hr
+      div.margin-b50
         if (event_proposal.appetizers)
           h4 Entradas:
-          div(style="display: inline-grid; grid-template-columns: auto auto auto; margin-bottom:25px;")
+          div.margin-b25.grid
             for appetizer in event_proposal.appetizers
               div.card(style="width:18rem;")
                 div.card-body
                   h5.card-title(style="text-transform:inital;") #{appetizer.name}
                   .card-text
-                    p #[strong Precio por persona:] $#{appetizer.sellprice_per_person}
-                    p #[strong Costo por persona:] $#{appetizer.cost_per_person}
-                    p #[strong Ganancia por persona:] $#{appetizer.earnings_per_person}
-                  a.btn.btn-primary(href=appetizer.url + "/update") Editar
+                    p.font-size-small #[strong Precio por persona:] $#{appetizer.sellprice_per_person}
+                    p.font-size-small #[strong Ganancia por persona:] $#{appetizer.earnings_per_person}
+                    p.font-size-small #[strong Tiempo previo al evento:] #{appetizer.time_prepare} minutos
+                    p.font-size-small #[strong Tiempo en el evento:] #{appetizer.time_event} minutos
+                    p.font-size-small #[strong Costo de insumos por persona:] $#{appetizer.ingredients_cost_per_person}                    
+                    p.font-size-small #[strong Costo de preparacion por persona:] $#{appetizer.time_cost_per_person}
+                  a.btn.btn-primary(href=appetizer.url) Detalle
 
         if (event_proposal.dishes)
           h4 Plato Principal:
-          div(style="display: inline-grid; grid-template-columns: auto auto auto;")
+          div.grid
             for dish in event_proposal.dishes
               div.card(style="width:18rem;")
                 div.card-body
                   h5.card-title(style="text-transform:inital;") #{dish.name}
                   .card-text
-                    p #[strong Precio por persona:] $#{dish.sellprice_per_person}
-                    p #[strong Costo por persona:] $#{dish.cost_per_person}
-                    p #[strong Ganancia por persona:] $#{dish.earnings_per_person}
-                  a.btn.btn-primary(href=dish.url + "/update") Editar
-      br
-      hr
-      br
-      if (event_proposal.dishes && event_proposal.appetizers)
-        h2 Balance
-        br
-        h4 Para cantidad mínima de comensales
-        h6 Precio de venta total:
-        p Calcular
-        br
-        h6 Costo total:
-        p Calcular            
-        br
-        h6 Ganancia:
-        p Calcular            
-        br
-        h4 Para cantidad máxima de comensales
-        h6 Precio de venta total:
-        p Calcular            
-        br
-        h6 Costo total:
-        p Calcular            
-        br
-        h6 Ganancia:
-        p Calcular            
-
-        
+                    p.font-size-small #[strong Precio por persona:] $#{ dish.sellprice_per_person}
+                    p.font-size-small #[strong Ganancia por persona:] $#{ dish.earnings_per_person}
+                    p.font-size-small #[strong Tiempo previo al evento:] #{ dish.time_prepare} minutos
+                    p.font-size-small #[strong Tiempo en el evento:] #{ dish.time_event} minutos
+                    p.font-size-small #[strong Costo de insumos por persona:] $#{dish.ingredients_cost_per_person}                    
+                    p.font-size-small #[strong Costo de preparacion por persona:] $#{dish.time_cost_per_person}
+                  a.btn.btn-primary(href=dish.url + "/update") Detalle
+      br  
       .btn-group
         a(href=event_proposal.url+'/update') 
           button.btn.btn-light Editar 
