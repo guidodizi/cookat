@@ -8,7 +8,7 @@ var Chef = require("../models/chef");
 var configAuth = require("./auth");
 
 // expose this function to our app using module.exports
-module.exports = function(passport) {
+module.exports = function (passport) {
   // =========================================================================
   // passport session setup ==================================================
   // =========================================================================
@@ -16,13 +16,13 @@ module.exports = function(passport) {
   // passport needs ability to serialize and unserialize users out of session
 
   // used to serialize the user for the session
-  passport.serializeUser(function(user, done) {
+  passport.serializeUser(function (user, done) {
     done(null, user.id);
   });
 
   // used to deserialize the user
-  passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
+  passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
       done(err, user);
     });
   });
@@ -35,12 +35,12 @@ module.exports = function(passport) {
       configAuth.facebookAuth,
 
       // facebook will send back the token and profile
-      function(token, refreshToken, profile, done) {
+      function (token, refreshToken, profile, done) {
         console.log(JSON.stringify(profile));
         // asynchronous
-        process.nextTick(function() {
+        process.nextTick(function () {
           // find the user in the database based on their facebook id
-          User.findOne({ "facebook.id": profile.id }, function(err, user) {
+          User.findOne({ "facebook.id": profile.id }, function (err, user) {
             // if there is an error, stop everything and return that
             // ie an error connecting to the database
             if (err) return done(err);
@@ -64,7 +64,7 @@ module.exports = function(passport) {
               newUser.main.last_name = profile.name.familyName;
 
               // save our user to the database
-              newUser.save(function(err) {
+              newUser.save(function (err) {
                 if (err) throw err;
 
                 // if successful, return the new user
@@ -92,13 +92,17 @@ module.exports = function(passport) {
         passwordField: "password",
         passReqToCallback: true // allows us to pass back the entire request to the callback
       },
-      function(req, email, password, done) {
+      function (req, email, password, done) {
+        console.log('PASSPORT')
+
         // asynchronous
         // User.findOne wont fire unless data is sent back
-        process.nextTick(function() {
+        process.nextTick(function () {
           // find a user whose email is the same as the forms email
+          console.log('PASSPORT')
+
           // we are checking to see if the user trying to login already exists
-          User.findOne({ "main.email": email }, function(err, user) {
+          User.findOne({ "main.email": email }, function (err, user) {
             // if there are any errors, return the error
             if (err) return done(err);
 
@@ -108,6 +112,8 @@ module.exports = function(passport) {
             } else {
               // if there is no user with that email
               // create the user
+              console.log('PASSPORT')
+
               var newUser = new User();
 
               // set the user's local credentials
@@ -117,7 +123,7 @@ module.exports = function(passport) {
               newUser.main.password = newUser.generateHash(password);
 
               // save the user
-              newUser.save(function(err) {
+              newUser.save(function (err) {
                 if (err) throw err;
 
                 var chef = new Chef({
@@ -154,12 +160,12 @@ module.exports = function(passport) {
         passwordField: "password",
         passReqToCallback: true // allows us to pass back the entire request to the callback
       },
-      function(req, email, password, done) {
+      function (req, email, password, done) {
         // callback with email and password from our form
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ "main.email": email }, function(err, user) {
+        User.findOne({ "main.email": email }, function (err, user) {
           // if there are any errors, return the error before anything else
           if (err) return done(err);
 
