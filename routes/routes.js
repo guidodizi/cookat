@@ -53,6 +53,7 @@ module.exports = function (passport) {
   router.get("/login", isLoggedOut, user_controller.login_get);
 
   router.post("/login", isLoggedOut, function (req, res, next) {
+    console.log('AAAAAAAAAAAAAAAAAAAAAAA')
     passport.authenticate("local-login", function (err, user, info) {
       if (err) return next(err);
       if (!user) {
