@@ -22,7 +22,7 @@ block content
           for error in errors
             li.error-msg!= error.msg
 
-      form(method='POST' action='' onsubmit="return checkForm()" )
+      form(method='POST' action='' )
         div.form-group
           label(for='email') Email:
           input#email.form-control(
